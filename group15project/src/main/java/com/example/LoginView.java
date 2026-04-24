@@ -16,6 +16,6 @@ public class LoginView extends JFrame{
     JButton backButton;
 
     public LoginView() {
-
+        
     }
 }
