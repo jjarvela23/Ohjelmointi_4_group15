@@ -44,5 +44,6 @@ public class Main extends JFrame {
         Main myprogram = new Main();
         myprogram.setVisible(true);
         UserDatabase userDatabase = new UserDatabase();
+        userDatabase.AddUser("pertti", "1234");
     }
 }

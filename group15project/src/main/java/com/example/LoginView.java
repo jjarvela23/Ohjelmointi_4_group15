@@ -15,7 +15,10 @@ public class LoginView extends JFrame{
     JButton loginButton;
     JButton backButton;
 
+    UserDatabase userDatabase = new UserDatabase();
+
     public LoginView() {
-        
+        username = new JTextField();
+        password = new JTextField();
     }
 }

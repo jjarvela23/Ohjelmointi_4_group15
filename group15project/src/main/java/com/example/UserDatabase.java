@@ -21,12 +21,8 @@ public final class UserDatabase {
             System.out.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("database created");
-
         try {
             Initialize();
-            String m = AddUser("jukka", "777");
-            System.out.println(m);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -65,7 +61,6 @@ public final class UserDatabase {
                     return "Username was taken";
                 }
             }
-            System.out.println("here");
             String newUser = "INSERT INTO Users (USERNAME,PASSWORD) VALUES ('" + username + "', '" + password + "');";
             statement.executeUpdate(newUser);
             return "user added";
@@ -75,7 +70,18 @@ public final class UserDatabase {
         return null;
     }
 
-    public int login(String username, String password) {
-        return 0;
+    public boolean login(String username, String password) throws SQLException {
+        ResultSet rs = statement.executeQuery("SELECT PASSWORD FROM Users WHERE USERNAME ='" + username + "';");
+        while (rs.next()) {
+            String actualPassword = rs.getString("password");
+            if (actualPassword.equals(password)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+            
+        }
+        return false;  
     }
 }
