@@ -23,12 +23,12 @@ public final class UserDatabase {
         }
         try {
             Initialize();
+            InitializeProducts();
+            
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
     }
 
     public void Initialize() throws SQLException {
@@ -37,7 +37,23 @@ public final class UserDatabase {
         String query = "CREATE TABLE IF NOT EXISTS Users " +
                         "(ID INTEGER PRIMARY KEY," +
                         " USERNAME TEXT NOT NULL," +
-                        " PASSWORD TEXT NOT NULL)";
+                        " PASSWORD TEXT NOT NULL," +
+                        " PHONENUMBER TEXT," +
+                        " EMAIL TEXT)";
+        statement.execute(query);
+    }
+
+    public void InitializeProducts() throws SQLException {
+        statement = c.createStatement();
+
+        String query = "CREATE TABLE IF NOT EXISTS Products " +
+                        "(ID INTEGER PRIMARY KEY," +
+                        " NAME TEXT NOT NULL," +
+                        " PRICE TEXT NOT NULL," + 
+                        " LOCATION TEXT NOT NULL," + 
+                        " DESCRIPTION TEXT," +
+                        " OWNER INT," + 
+                        " FOREIGN KEY (OWNER) REFERENCES Users(ID))";
         statement.execute(query);
     }
 
@@ -83,5 +99,21 @@ public final class UserDatabase {
             
         }
         return false;  
+    }
+
+    public void AddProduct(String name, String price, String location, String description) {
+
+    }
+
+    public ResultSet GetProductsFromUser(int userid) {
+        ResultSet rs = null;
+
+        return rs;
+    }
+
+    public ResultSet GetAllProducts() {
+        ResultSet rs = null;
+
+        return rs;
     }
 }
