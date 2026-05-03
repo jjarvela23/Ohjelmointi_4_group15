@@ -1,6 +1,8 @@
 package com.example;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,24 +21,38 @@ public class MainView extends JPanel{
     JComboBox<String> Category;
     JComboBox<String> Area;
 
-    String[] CateroryList = {"x", "y", "z" };
-    String[] AreaList = {"x", "y", "z" };
+    String[] CateroryList = {"Elektroniikka", "y", "z" };
+    String[] AreaList = {"Pohjanmaa", "y", "z" };
 
-    public MainView(Runnable goToLogin) {
+    public MainView(Runnable goToLogin, Runnable SellProduct) {
         setLayout(new FlowLayout());
 
         label = new JLabel();
         label.setText("testing");
 
-        Area = new JComboBox<>(CateroryList);
+        Area = new JComboBox<>(AreaList);
+        Category = new JComboBox<>(CateroryList);
 
         // make an else-if that checks if the user has logged in. button name changes, and the button sends to a different screen.
-        JButton UserButton = new JButton("user");
+        UserButton = new JButton("käyttäjä");
         UserButton.addActionListener(e -> goToLogin.run());
         
+        SellButton = new JButton("myy");
+        SellButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Main.CurrentUser > 0) {
+                    SellProduct.run();
+                }
+                else {
+                    goToLogin.run();
+                }
+            }
+        });
         add(label);
         add(Area);
         add(UserButton);
+        add(SellButton);
     }
 
     

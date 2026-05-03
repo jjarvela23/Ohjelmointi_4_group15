@@ -23,15 +23,14 @@ public class LoginView extends JPanel {
 
     UserDatabase userDatabase = new UserDatabase();
 
-    public LoginView(Runnable goToMain) {
+    public LoginView(Runnable goToMain, Runnable GoToRegister) {
         setLayout(new FlowLayout());
-        username = new JTextField();
-        password = new JTextField();
 
         backButton = new JButton("takaisin");
         backButton.addActionListener(e -> goToMain.run());
 
         loginButton = new JButton("kirjaudu");
+        
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,12 +52,21 @@ public class LoginView extends JPanel {
             }
         });
 
+        registerButton = new JButton("rekisteröidy");
+        registerButton.addActionListener(e -> GoToRegister.run());
+
         username = new JTextField(32);
         password = new JTextField(32);
 
+        usernameText = new JLabel("käyttäjänimi");
+        passwordText = new JLabel("salasana");
+
         add(backButton);
         add(loginButton);
+        add(registerButton);
         add(username);
         add(password);
+        add(usernameText);
+        add(passwordText);
     }
 }

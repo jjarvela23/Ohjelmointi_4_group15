@@ -22,7 +22,7 @@ public final class UserDatabase {
             System.exit(0);
         }
         try {
-            Initialize();
+            InitializeUsers();
             InitializeProducts();
             
         } catch (SQLException e) {
@@ -31,13 +31,14 @@ public final class UserDatabase {
         }
     }
 
-    public void Initialize() throws SQLException {
+    public void InitializeUsers() throws SQLException {
         statement = c.createStatement();
 
         String query = "CREATE TABLE IF NOT EXISTS Users " +
                         "(ID INTEGER PRIMARY KEY," +
                         " USERNAME TEXT NOT NULL," +
                         " PASSWORD TEXT NOT NULL," +
+                        " FULLNAME TEXT, " +
                         " PHONENUMBER TEXT," +
                         " EMAIL TEXT)";
         statement.execute(query);
@@ -52,6 +53,7 @@ public final class UserDatabase {
                         " PRICE TEXT NOT NULL," + 
                         " LOCATION TEXT NOT NULL," + 
                         " DESCRIPTION TEXT," +
+                        " CATEGORY TEXT," +
                         " OWNER INT," + 
                         " FOREIGN KEY (OWNER) REFERENCES Users(ID))";
         statement.execute(query);
@@ -69,21 +71,16 @@ public final class UserDatabase {
         }
     }
 
-    public String AddUser(String username, String password) {
-        try {
+    public int AddUser(String username, String password) throws SQLException {
             ResultSet rs = statement.executeQuery("SELECT * FROM Users;");
             while (rs.next()) {
                 if (rs.getString("username").equals(username)) {
-                    return "Username was taken";
+                    return 2;
                 }
             }
             String newUser = "INSERT INTO Users (USERNAME,PASSWORD) VALUES ('" + username + "', '" + password + "');";
             statement.executeUpdate(newUser);
-            return "user added";
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
+            return 1;
     }
 
     public boolean login(String username, String password) throws SQLException {
