@@ -17,6 +17,7 @@ public class MainView extends JPanel{
 
     JButton UserButton;
     JButton SellButton;
+    JButton SearchButton;
     JLabel label;
     JTextField searchBar;
     JComboBox<String> Category;
@@ -40,8 +41,7 @@ public class MainView extends JPanel{
         JLabel prolabel = new JLabel("tuote");
         JButton probutton = new JButton("nappi");
         product.add(prolabel);
-        product.add(probutton);
-        
+        product.add(probutton);   
 
         // make an else-if that checks if the user has logged in. button name changes, and the button sends to a different screen.
         UserButton = new JButton("käyttäjä");
@@ -69,11 +69,15 @@ public class MainView extends JPanel{
                 }
             }
         });
+
+        SearchButton = new JButton("hae");
         
 
         add(label);
         add(Area);
+        add(Category);
         add(UserButton);
         add(SellButton);
+        add(SearchButton);
     }
 }

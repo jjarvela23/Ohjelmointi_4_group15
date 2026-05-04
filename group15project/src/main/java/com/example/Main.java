@@ -27,7 +27,7 @@ public class Main extends JFrame {
         MainView mainView = new MainView(() -> cardLayout.show(panel, "loginView"), () -> cardLayout.show(panel, "sellView"), () -> cardLayout.show(panel, "userView"));
         UserView userView = new UserView(() -> cardLayout.show(panel, "mainView"));
         LoginView loginView = new LoginView(() -> cardLayout.show(panel, "mainView"), () -> cardLayout.show(panel, "registerView"), userView);
-        SellView sellView = new SellView(() -> cardLayout.show(panel, "mainView"));
+        SellView sellView = new SellView(() -> cardLayout.show(panel, "mainView"), mainView);
         RegisterView registerView = new RegisterView(() -> cardLayout.show(panel, "loginView"));
         panel.add(mainView, "mainView");
         panel.add(loginView, "loginView");
@@ -40,10 +40,5 @@ public class Main extends JFrame {
         //set frame to screen resolution, preferable TODO
         frame.setSize(1980, 1080);
         frame.setVisible(true);
-    }
-
-    public static void Update() {
-        frame.revalidate();
-        frame.repaint();
     }
 }

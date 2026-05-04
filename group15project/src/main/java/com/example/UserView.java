@@ -42,12 +42,16 @@ public class UserView extends JPanel {
         phonenumber = new JLabel();
         email = new JLabel();
 
+        backButton = new JButton("takaisin");
+        backButton.addActionListener(e -> BackToMain.run());
+
         add(title);
         add(username);
         add(password);
         add(fullname);
         add(phonenumber);
         add(email);   
+        add(backButton);
     }
 
     public void setUser() {
@@ -65,9 +69,6 @@ public class UserView extends JPanel {
                 fullname.setText(fullnameString);
                 phonenumber.setText(phonenumberString);
                 email.setText(emailString);
-                revalidate();
-                repaint();
-                Main.Update();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

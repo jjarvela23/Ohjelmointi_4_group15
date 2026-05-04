@@ -16,7 +16,9 @@ public final class UserDatabase {
     public UserDatabase() {
         
         try {
-            c = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+            if (c == null) {
+                c = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+            }
         } catch (Exception e) {
             System.out.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
@@ -32,6 +34,7 @@ public final class UserDatabase {
     }
 
     public void InitializeUsers() throws SQLException {
+        
         statement = c.createStatement();
 
         String query = "CREATE TABLE IF NOT EXISTS Users " +
@@ -42,6 +45,7 @@ public final class UserDatabase {
                         " PHONENUMBER TEXT," +
                         " EMAIL TEXT)";
         statement.execute(query);
+        statement.close();
     }
 
     public void InitializeProducts() throws SQLException {
@@ -57,16 +61,20 @@ public final class UserDatabase {
                         " OWNER INT," + 
                         " FOREIGN KEY (OWNER) REFERENCES Users(ID))";
         statement.execute(query);
+        statement.close();
     }
 
     public ResultSet GetUser(int id) throws SQLException {
+        statement = c.createStatement();
         ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE (id = "+ id + ");");
+        statement.close();
         return rs;
     }
 
         
 
     public int AddUser(String username, String password, String fullname, String phonenumber, String email) throws SQLException {
+            statement = c.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM Users;");
             while (rs.next()) {
                 if (rs.getString("username").equals(username)) {
@@ -81,15 +89,18 @@ public final class UserDatabase {
             email + 
             "');";
             statement.executeUpdate(newUser);
+            statement.close();
             return 1;
     }
 
     public int login(String username, String password) throws SQLException {
+        statement = c.createStatement();
         ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE USERNAME ='" + username + "';");
         while (rs.next()) {
             int id = rs.getInt("id");
             String actualPassword = rs.getString("password");
             if (actualPassword.equals(password)) {
+                statement.close();
                 return id;
             }
             else {
@@ -97,24 +108,41 @@ public final class UserDatabase {
             }
             
         }
+        statement.close();
         return 0;  
     }
 
-    public void AddProduct(String name, String price, String location, String description, String category) {
-
+    public boolean AddProduct(String name, String price, String location, String description, String category) throws SQLException {
+        statement = c.createStatement();
+        int owner = Main.CurrentUser;
+        String query = "INSERT INTO Products (NAME,PRICE,LOCATION,DESCRIPTION,CATEGORY,OWNER) VALUES ('" + 
+        name + "'," + "'" + 
+        price + "'," + "'" + 
+        location + "'," + "'" + 
+        description + "'," + "'" + 
+        category + "'," + "'" + 
+        owner +
+        "');";
+        statement.executeUpdate(query);
+        statement.close();
+        return true;
     }
 
     //TODO for userView
-    public ResultSet GetProductsFromUser(int userid) {
-        ResultSet rs = null;
-
+    public ResultSet GetProductsFromUser(int userid) throws SQLException {
+        statement = c.createStatement();
+        String query = "SELECT * FROM Products WHERE OWNER ='" + userid + "';";
+        ResultSet rs = statement.executeQuery(query);
+        statement.close();
         return rs;
     }
 
     //TODO for mainView
-    public ResultSet GetAllProducts() {
-        ResultSet rs = null;
-
+    public ResultSet GetAllProducts() throws SQLException {
+        statement = c.createStatement();
+        String query = "SELECT * FROM Products";
+        ResultSet rs = statement.executeQuery(query);
+        statement.close();
         return rs;
     }
 }

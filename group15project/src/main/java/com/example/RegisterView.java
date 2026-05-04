@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -62,10 +63,11 @@ public class RegisterView extends JPanel{
                 try {
                     
                     if (userDatabase.AddUser(uname, pword, fname, pnumber, mail) == 2) {
-                        System.out.println("Username was taken");
+                        JOptionPane.showMessageDialog(null, "käyttäjänimi on jo olemassa", "virhe", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
-                        System.out.println("Registration succesful");
+                        JOptionPane.showMessageDialog(null, "Uusi käyttäjä rekisteröity. Kirjaudu sisään.", "rekisteröinti onnistui", JOptionPane.INFORMATION_MESSAGE);
+                        BackToLogin.run();
                     }
                     
                 } catch (SQLException ex) {

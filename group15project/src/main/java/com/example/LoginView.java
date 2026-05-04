@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -50,8 +51,8 @@ public class LoginView extends JPanel {
                     }
                 } catch (SQLException e1) {
                     // TODO Auto-generated catch block
-                    e1.printStackTrace();
                     System.out.println("Username or password was incorrect");
+                    JOptionPane.showMessageDialog(null, "käyttäjänimi tai salasana oli väärin", "virhe", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
