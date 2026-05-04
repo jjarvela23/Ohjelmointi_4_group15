@@ -61,20 +61,25 @@ public final class UserDatabase {
 
     public ResultSet GetUser(int id) throws SQLException {
         ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE (id = "+ id + ");");
-
         return rs;
     }
 
         
 
-    public int AddUser(String username, String password) throws SQLException {
+    public int AddUser(String username, String password, String fullname, String phonenumber, String email) throws SQLException {
             ResultSet rs = statement.executeQuery("SELECT * FROM Users;");
             while (rs.next()) {
                 if (rs.getString("username").equals(username)) {
                     return 2;
                 }
             }
-            String newUser = "INSERT INTO Users (USERNAME,PASSWORD) VALUES ('" + username + "', '" + password + "');";
+            String newUser = "INSERT INTO Users (USERNAME,PASSWORD,FULLNAME,PHONENUMBER,EMAIL) VALUES ('" +
+            username + "'," + "'" + 
+            password + "'," + "'" + 
+            fullname + "'," + "'" + 
+            phonenumber + "'," + "'" + 
+            email + 
+            "');";
             statement.executeUpdate(newUser);
             return 1;
     }
@@ -95,16 +100,18 @@ public final class UserDatabase {
         return 0;  
     }
 
-    public void AddProduct(String name, String price, String location, String description) {
+    public void AddProduct(String name, String price, String location, String description, String category) {
 
     }
 
+    //TODO for userView
     public ResultSet GetProductsFromUser(int userid) {
         ResultSet rs = null;
 
         return rs;
     }
 
+    //TODO for mainView
     public ResultSet GetAllProducts() {
         ResultSet rs = null;
 

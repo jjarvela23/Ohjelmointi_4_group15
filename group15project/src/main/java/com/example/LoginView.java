@@ -23,7 +23,7 @@ public class LoginView extends JPanel {
 
     UserDatabase userDatabase = new UserDatabase();
 
-    public LoginView(Runnable goToMain, Runnable GoToRegister) {
+    public LoginView(Runnable goToMain, Runnable GoToRegister, UserView userView) {
         setLayout(new FlowLayout());
 
         backButton = new JButton("takaisin");
@@ -42,6 +42,7 @@ public class LoginView extends JPanel {
                         //do login stuff
                         int userId = userDatabase.login(uname, pword);
                         Main.CurrentUser = userId;
+                        userView.setUser();
                         System.out.println("login succesful");
                     }
                     else {

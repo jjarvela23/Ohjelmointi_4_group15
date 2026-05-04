@@ -1,6 +1,7 @@
 package com.example;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,6 +34,15 @@ public class MainView extends JPanel{
         Area = new JComboBox<>(AreaList);
         Category = new JComboBox<>(CateroryList);
 
+        //create a new panel for individual products.
+        JPanel product = new JPanel();
+        product.setLayout(new GridLayout());
+        JLabel prolabel = new JLabel("tuote");
+        JButton probutton = new JButton("nappi");
+        product.add(prolabel);
+        product.add(probutton);
+        
+
         // make an else-if that checks if the user has logged in. button name changes, and the button sends to a different screen.
         UserButton = new JButton("käyttäjä");
         UserButton.addActionListener(new ActionListener() {
@@ -59,11 +69,11 @@ public class MainView extends JPanel{
                 }
             }
         });
+        
+
         add(label);
         add(Area);
         add(UserButton);
         add(SellButton);
     }
-
-    
 }

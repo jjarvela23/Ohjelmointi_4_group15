@@ -61,7 +61,7 @@ public class RegisterView extends JPanel{
 
                 try {
                     
-                    if (userDatabase.AddUser(uname, pword) == 2) {
+                    if (userDatabase.AddUser(uname, pword, fname, pnumber, mail) == 2) {
                         System.out.println("Username was taken");
                     }
                     else {
@@ -69,6 +69,7 @@ public class RegisterView extends JPanel{
                     }
                     
                 } catch (SQLException ex) {
+                    ex.printStackTrace();
                     System.out.println("registration went wrong");
                 }
             }

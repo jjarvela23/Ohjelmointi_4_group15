@@ -25,8 +25,8 @@ public class Main extends JFrame {
 
         //creating all views, and adding them to the panel. Each view has a runnable-parameter for switching views.
         MainView mainView = new MainView(() -> cardLayout.show(panel, "loginView"), () -> cardLayout.show(panel, "sellView"), () -> cardLayout.show(panel, "userView"));
-        LoginView loginView = new LoginView(() -> cardLayout.show(panel, "mainView"), () -> cardLayout.show(panel, "registerView"));
         UserView userView = new UserView(() -> cardLayout.show(panel, "mainView"));
+        LoginView loginView = new LoginView(() -> cardLayout.show(panel, "mainView"), () -> cardLayout.show(panel, "registerView"), userView);
         SellView sellView = new SellView(() -> cardLayout.show(panel, "mainView"));
         RegisterView registerView = new RegisterView(() -> cardLayout.show(panel, "loginView"));
         panel.add(mainView, "mainView");

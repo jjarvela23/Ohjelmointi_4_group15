@@ -22,11 +22,11 @@ public class UserView extends JPanel {
     JButton editAccount;
     JButton deleteAccount;
 
-    String usernameString = "ee";
+    String usernameString;
     String passwordString;
     String fullnameString;
     String phonenumberString;
-    String emailString = "eee";
+    String emailString;
 
     UserDatabase userDatabase = new UserDatabase();
 
@@ -36,11 +36,11 @@ public class UserView extends JPanel {
         //adding values to strings from the user database.
 
         title = new JLabel("Oma tili");
-        username = new JLabel(usernameString);
-        password = new JLabel(passwordString);
-        fullname = new JLabel(fullnameString);
-        phonenumber = new JLabel(phonenumberString);
-        email = new JLabel(emailString);
+        username = new JLabel();
+        password = new JLabel();
+        fullname = new JLabel();
+        phonenumber = new JLabel();
+        email = new JLabel();
 
         add(title);
         add(username);
@@ -48,8 +48,6 @@ public class UserView extends JPanel {
         add(fullname);
         add(phonenumber);
         add(email);   
-
-        email.setText("aaa");
     }
 
     public void setUser() {
