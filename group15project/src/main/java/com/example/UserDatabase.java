@@ -59,17 +59,13 @@ public final class UserDatabase {
         statement.execute(query);
     }
 
-    public void GetUser() throws SQLException {
-        ResultSet rs = statement.executeQuery("SELECT * FROM Users;");
+    public ResultSet GetUser(int id) throws SQLException {
+        ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE (id = "+ id + ");");
 
-        while (rs.next()) {
-            String username = rs.getString("username");
-            String password = rs.getString("password");
-
-            System.out.println(username);
-            System.out.println(password);
-        }
+        return rs;
     }
+
+        
 
     public int AddUser(String username, String password) throws SQLException {
             ResultSet rs = statement.executeQuery("SELECT * FROM Users;");
@@ -83,19 +79,20 @@ public final class UserDatabase {
             return 1;
     }
 
-    public boolean login(String username, String password) throws SQLException {
-        ResultSet rs = statement.executeQuery("SELECT PASSWORD FROM Users WHERE USERNAME ='" + username + "';");
+    public int login(String username, String password) throws SQLException {
+        ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE USERNAME ='" + username + "';");
         while (rs.next()) {
+            int id = rs.getInt("id");
             String actualPassword = rs.getString("password");
             if (actualPassword.equals(password)) {
-                return true;
+                return id;
             }
             else {
-                return false;
+                return 0;
             }
             
         }
-        return false;  
+        return 0;  
     }
 
     public void AddProduct(String name, String price, String location, String description) {

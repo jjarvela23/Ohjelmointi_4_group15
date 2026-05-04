@@ -24,7 +24,7 @@ public class MainView extends JPanel{
     String[] CateroryList = {"Elektroniikka", "y", "z" };
     String[] AreaList = {"Pohjanmaa", "y", "z" };
 
-    public MainView(Runnable goToLogin, Runnable SellProduct) {
+    public MainView(Runnable goToLogin, Runnable SellProduct, Runnable goToUser) {
         setLayout(new FlowLayout());
 
         label = new JLabel();
@@ -35,7 +35,17 @@ public class MainView extends JPanel{
 
         // make an else-if that checks if the user has logged in. button name changes, and the button sends to a different screen.
         UserButton = new JButton("käyttäjä");
-        UserButton.addActionListener(e -> goToLogin.run());
+        UserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Main.CurrentUser > 0) {
+                    goToUser.run();
+                }
+                else {
+                    goToLogin.run();
+                }
+            }
+        });
         
         SellButton = new JButton("myy");
         SellButton.addActionListener(new ActionListener() {

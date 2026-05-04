@@ -38,15 +38,18 @@ public class LoginView extends JPanel {
                 String pword = password.getText();
                 try {
 
-                    if (userDatabase.login(uname, pword)) {
-                        System.out.println("login succesful");
+                    if (userDatabase.login(uname, pword) > 0) {
                         //do login stuff
+                        int userId = userDatabase.login(uname, pword);
+                        Main.CurrentUser = userId;
+                        System.out.println("login succesful");
                     }
                     else {
                         System.out.println("login failed");
                     }
                 } catch (SQLException e1) {
                     // TODO Auto-generated catch block
+                    e1.printStackTrace();
                     System.out.println("Username or password was incorrect");
                 }
             }
