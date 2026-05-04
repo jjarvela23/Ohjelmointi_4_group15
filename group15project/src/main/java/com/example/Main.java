@@ -24,8 +24,8 @@ public class Main extends JFrame {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //creating all views, and adding them to the panel. Each view has a runnable-parameter for switching views.
-        MainView mainView = new MainView(() -> cardLayout.show(panel, "loginView"), () -> cardLayout.show(panel, "sellView"), () -> cardLayout.show(panel, "userView"));
         UserView userView = new UserView(() -> cardLayout.show(panel, "mainView"));
+        MainView mainView = new MainView(() -> cardLayout.show(panel, "loginView"), () -> cardLayout.show(panel, "sellView"), () -> cardLayout.show(panel, "userView"), userView);
         LoginView loginView = new LoginView(() -> cardLayout.show(panel, "mainView"), () -> cardLayout.show(panel, "registerView"), userView);
         SellView sellView = new SellView(() -> cardLayout.show(panel, "mainView"), mainView);
         RegisterView registerView = new RegisterView(() -> cardLayout.show(panel, "loginView"));
@@ -34,6 +34,8 @@ public class Main extends JFrame {
         panel.add(userView, "userView");
         panel.add(sellView, "sellView");
         panel.add(registerView, "registerView");
+
+        mainView.SetProducts();
 
         //add panel to the frame
         frame.add(panel);

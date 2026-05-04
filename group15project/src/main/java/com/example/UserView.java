@@ -1,9 +1,12 @@
 package com.example;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -72,6 +75,39 @@ public class UserView extends JPanel {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void SetUserProducts() {
+        try {
+                ResultSet rs = userDatabase.GetProductsFromUser(Main.CurrentUser);
+                while (rs.next()) {
+                    JPanel productContainer = new JPanel(new GridLayout());
+                    productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
+                    JLabel name = new JLabel("nimi");
+                    JLabel price = new JLabel("price");
+                    JLabel location = new JLabel("location");
+                    JLabel ownerLabel = new JLabel("owner");
+                    productContainer.add(name);
+                    productContainer.add(new JLabel(rs.getString("name")));
+                    productContainer.add(price);
+                    productContainer.add(new JLabel(rs.getString("price")));
+                    productContainer.add(location);
+                    productContainer.add(new JLabel(rs.getString("location")));
+                    int owner = rs.getInt("owner");
+                    ResultSet rs2 = userDatabase.GetUser(owner);
+                    String fullname = "";
+                    while (rs2.next()) {
+                        fullname = rs2.getString("fullname");
+                    }
+                    productContainer.add(ownerLabel);
+                    productContainer.add(new JLabel(fullname));
+                    
+                    this.add(productContainer);
+                }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            
         }
     }
 }

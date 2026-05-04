@@ -66,8 +66,7 @@ public final class UserDatabase {
 
     public ResultSet GetUser(int id) throws SQLException {
         statement = c.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE (id = "+ id + ");");
-        statement.close();
+        ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE ID = "+ id + ";");
         return rs;
     }
 
@@ -104,6 +103,7 @@ public final class UserDatabase {
                 return id;
             }
             else {
+                statement.close();
                 return 0;
             }
             
@@ -133,7 +133,6 @@ public final class UserDatabase {
         statement = c.createStatement();
         String query = "SELECT * FROM Products WHERE OWNER ='" + userid + "';";
         ResultSet rs = statement.executeQuery(query);
-        statement.close();
         return rs;
     }
 
@@ -142,7 +141,6 @@ public final class UserDatabase {
         statement = c.createStatement();
         String query = "SELECT * FROM Products";
         ResultSet rs = statement.executeQuery(query);
-        statement.close();
         return rs;
     }
 }
