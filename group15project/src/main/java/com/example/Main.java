@@ -11,6 +11,10 @@ public class Main extends JFrame {
     //global variable for the user who is logged in.
     public static int CurrentUser = 0;
 
+    //TODO
+    public static String[] CateroryList = {"Elektroniikka", "y", "z" };
+    public static String[] LocationList = {"Pohjanmaa", "y", "z" };
+
     private static JFrame frame;
 
     public static void main(String[] args) {
@@ -40,7 +44,7 @@ public class Main extends JFrame {
         //add panel to the frame
         frame.add(panel);
         //set frame to screen resolution, preferable TODO
-        frame.setSize(1980, 1080);
+        frame.setSize(1000, 700);
         frame.setVisible(true);
     }
 }

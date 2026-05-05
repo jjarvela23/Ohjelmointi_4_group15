@@ -35,24 +35,30 @@ public class LoginView extends JPanel {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String uname = username.getText();
-                String pword = password.getText();
-                try {
+                
+                if (username.getText().isEmpty() || password.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    String uname = username.getText();
+                    String pword = password.getText();    
+                    try {
 
-                    if (userDatabase.login(uname, pword) > 0) {
-                        //do login stuff
-                        int userId = userDatabase.login(uname, pword);
-                        Main.CurrentUser = userId;
-                        userView.setUser();
-                        System.out.println("login succesful");
+                        if (userDatabase.login(uname, pword) > 0) {
+                            //do login stuff
+                            int userId = userDatabase.login(uname, pword);
+                            Main.CurrentUser = userId;
+                            userView.setUser();
+                            System.out.println("login succesful");
+                        }
+                        else {
+                            System.out.println("login failed");
+                        }
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        System.out.println("Username or password was incorrect");
+                        JOptionPane.showMessageDialog(null, "käyttäjänimi tai salasana oli väärin", "virhe", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    else {
-                        System.out.println("login failed");
-                    }
-                } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
-                    System.out.println("Username or password was incorrect");
-                    JOptionPane.showMessageDialog(null, "käyttäjänimi tai salasana oli väärin", "virhe", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -69,9 +75,9 @@ public class LoginView extends JPanel {
         add(backButton);
         add(loginButton);
         add(registerButton);
-        add(username);
-        add(password);
         add(usernameText);
+        add(username);
         add(passwordText);
+        add(password);
     }
 }

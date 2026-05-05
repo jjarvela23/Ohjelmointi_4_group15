@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class SellView extends JPanel {
@@ -21,10 +22,12 @@ public class SellView extends JPanel {
     JLabel categoryLabel;
     
 
+
+    //TODO turn location and category to comboboxes
     JTextField name;
     JTextField price;
     JTextField location;
-    JTextField description;
+    JTextArea description;
     JTextField category;
 
     JButton ConfirmButton;
@@ -38,7 +41,7 @@ public class SellView extends JPanel {
         name = new JTextField(32);
         price = new JTextField(32);
         location = new JTextField(32);
-        description = new JTextField(32);
+        description = new JTextArea(20, 20);
         category = new JTextField(32);
         
         topHeader = new JLabel("Myydään");

@@ -30,6 +30,7 @@ public class RegisterView extends JPanel{
     UserDatabase userDatabase = new UserDatabase();
 
     public RegisterView(Runnable BackToLogin) {
+        //set panel layout
         setLayout(new FlowLayout());
 
         username = new JTextField(32);
@@ -53,26 +54,33 @@ public class RegisterView extends JPanel{
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO catch empty
-                String uname = username.getText();
-                String pword = password.getText();
-                String fname = fullname.getText();
-                String pnumber = phoneNumber.getText();
-                String mail = email.getText();
+                //check if one or more fields are empty
+                if (username.getText().isEmpty() || password.getText().isEmpty() || fullname.getText().isEmpty() || phoneNumber.getText().isEmpty() || email.getText().isEmpty()) { 
+                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    //get the strings from the text fields
+                    String uname = username.getText();
+                    String pword = password.getText();
+                    String fname = fullname.getText();
+                    String pnumber = phoneNumber.getText();
+                    String mail = email.getText();
 
-                try {
-                    
-                    if (userDatabase.AddUser(uname, pword, fname, pnumber, mail) == 2) {
-                        JOptionPane.showMessageDialog(null, "käyttäjänimi on jo olemassa", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        //add user to database. Method returns 2 if the username already exists.
+                        if (userDatabase.AddUser(uname, pword, fname, pnumber, mail) == 2) {
+                            JOptionPane.showMessageDialog(null, "käyttäjänimi on jo olemassa", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        //send back to login screen after user is added.
+                        else {
+                            JOptionPane.showMessageDialog(null, "Uusi käyttäjä rekisteröity. Kirjaudu sisään.", "rekisteröinti onnistui", JOptionPane.INFORMATION_MESSAGE);
+                            BackToLogin.run();
+                        }
+                        
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        System.out.println("registration went wrong");
                     }
-                    else {
-                        JOptionPane.showMessageDialog(null, "Uusi käyttäjä rekisteröity. Kirjaudu sisään.", "rekisteröinti onnistui", JOptionPane.INFORMATION_MESSAGE);
-                        BackToLogin.run();
-                    }
-                    
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    System.out.println("registration went wrong");
                 }
             }
         });
