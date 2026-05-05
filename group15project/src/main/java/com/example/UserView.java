@@ -13,65 +13,53 @@ import javax.swing.JPanel;
 
 public class UserView extends JPanel {
 
-
     JLabel title;
-    JLabel username;
-    JLabel password;
-    JLabel fullname;
-    JLabel phonenumber;
-    JLabel email;
+    JLabel usernameLabel;
+    JLabel fullnameLabel;
+    JLabel phonenumberLabel;
+    JLabel emailLabel;
 
     JButton backButton;
-    JButton editAccount;
-    JButton deleteAccount;
 
-    String usernameString;
-    String passwordString;
-    String fullnameString;
-    String phonenumberString;
-    String emailString;
+    JPanel productsPanel = new JPanel(new FlowLayout());
 
     UserDatabase userDatabase = new UserDatabase();
 
-    public UserView(Runnable BackToMain)  {
+    public UserView(Runnable BackToMain) {
         //view should look like the users. each user has their own database of products.
         setLayout(new FlowLayout());
         //adding values to strings from the user database.
 
         title = new JLabel("Oma tili");
-        username = new JLabel();
-        password = new JLabel();
-        fullname = new JLabel();
-        phonenumber = new JLabel();
-        email = new JLabel();
+        usernameLabel = new JLabel();
+        fullnameLabel = new JLabel();
+        phonenumberLabel = new JLabel();
+        emailLabel = new JLabel();
 
         backButton = new JButton("takaisin");
         backButton.addActionListener(e -> BackToMain.run());
 
         add(title);
-        add(username);
-        add(password);
-        add(fullname);
-        add(phonenumber);
-        add(email);   
+        add(new JLabel("Käyttäjänimi:"));
+        add(usernameLabel);
+        add(new JLabel("Nimi:"));
+        add(fullnameLabel);
+        add(new JLabel("Puhelin:"));
+        add(phonenumberLabel);
+        add(new JLabel("Sähköposti:"));
+        add(emailLabel);
         add(backButton);
+        add(productsPanel);
     }
 
     public void setUser() {
         try {
             ResultSet rs = userDatabase.GetUser(Main.CurrentUser);
             while (rs.next()) {
-                username.setText(rs.getString("username"));
-                usernameString = rs.getString("username");
-                passwordString = rs.getString("password");
-                fullnameString = rs.getString("fullname");
-                phonenumberString = rs.getString("phonenumber");
-                emailString = rs.getString("email");
-                //username.setText(usernameString);
-                password.setText(passwordString);
-                fullname.setText(fullnameString);
-                phonenumber.setText(phonenumberString);
-                email.setText(emailString);
+                usernameLabel.setText(rs.getString("username"));
+                fullnameLabel.setText(rs.getString("fullname"));
+                phonenumberLabel.setText(rs.getString("phonenumber"));
+                emailLabel.setText(rs.getString("email"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -79,26 +67,28 @@ public class UserView extends JPanel {
     }
 
     public void SetUserProducts() {
+        productsPanel.removeAll();
+
         try {
-                ResultSet rs = userDatabase.GetProductsFromUser(Main.CurrentUser);
-                while (rs.next()) {
-                    JPanel productContainer = new JPanel(new GridLayout());
-                    productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
-                    JLabel name = new JLabel("nimi");
-                    JLabel price = new JLabel("hinta");
-                    JLabel location = new JLabel("sijainti");
-                    productContainer.add(name);
-                    productContainer.add(new JLabel(rs.getString("name")));
-                    productContainer.add(price);
-                    productContainer.add(new JLabel(rs.getString("price")));
-                    productContainer.add(location);
-                    productContainer.add(new JLabel(rs.getString("location")));
-                    
-                    this.add(productContainer);
-                }
+            ResultSet rs = userDatabase.GetProductsFromUser(Main.CurrentUser);
+            while (rs.next()) {
+                JPanel productContainer = new JPanel(new GridLayout(0, 2, 4, 4));
+                productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
+
+                productContainer.add(new JLabel("nimi:"));
+                productContainer.add(new JLabel(rs.getString("name")));
+                productContainer.add(new JLabel("hinta:"));
+                productContainer.add(new JLabel(rs.getString("price")));
+                productContainer.add(new JLabel("sijainti:"));
+                productContainer.add(new JLabel(rs.getString("location")));
+
+                productsPanel.add(productContainer);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            
         }
+
+        revalidate();
+        repaint();
     }
 }

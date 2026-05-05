@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,15 +25,15 @@ public class SellView extends JPanel {
     //TODO turn location and category to comboboxes
     JTextField name;
     JTextField price;
-    JTextField location;
     JTextArea description;
-    JTextField category;
+    JComboBox<String> location;
+    JComboBox<String> category;
 
     JButton ConfirmButton;
     JButton BackButton;
 
     UserDatabase userDatabase = new UserDatabase();
-    
+
     public SellView(Runnable BackToMain, MainView mainView) {
         //set layout 
         setLayout(new FlowLayout());
@@ -40,10 +41,10 @@ public class SellView extends JPanel {
         //all text fields for the user input. Description is rectangular.
         name = new JTextField(32);
         price = new JTextField(32);
-        location = new JTextField(32);
-        description = new JTextArea(20, 20);
-        category = new JTextField(32);
-        
+        location = new JComboBox<>(Main.LocationList);
+        category = new JComboBox<>(Main.CateroryList);
+        description = new JTextArea(5, 32);
+
         //labels which go next to text fields.
         topHeader = new JLabel("Myydään");
         nameLabel = new JLabel("nimi");
@@ -61,27 +62,36 @@ public class SellView extends JPanel {
         ConfirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String selectedLocation = (String) location.getSelectedItem();
+                String selectedCategory = (String) category.getSelectedItem();
+
                 //check that no field is empty.
-                if (name.getText().isEmpty() || price.getText().isEmpty() || location.getText().isEmpty() || description.getText().isEmpty() || category.getText().isEmpty()) { 
+                if (name.getText().isEmpty() || price.getText().isEmpty() || selectedLocation.isEmpty() || description.getText().isEmpty() || selectedCategory.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä", "virhe", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else {
+                } else {
                     //get inputs.
                     String nam = name.getText();
                     String pri = price.getText();
-                    String loca = location.getText();
+                    String loca = selectedLocation;
                     String desc = description.getText();
-                    String cate = category.getText();
-                    
-                    try {         
+                    String cate = selectedCategory;
+
+                    try {
                         //add product to database. Method returns true or false.              
                         if (userDatabase.AddProduct(nam, pri, loca, desc, cate)) {
-                            JOptionPane.showMessageDialog(null, "Uusi tuote lisätty", "onnistui", JOptionPane.INFORMATION_MESSAGE); 
+                            JOptionPane.showMessageDialog(null, "Uusi tuote lisätty", "onnistui", JOptionPane.INFORMATION_MESSAGE);
+                            mainView.SetProducts();
+                            name.setText("");
+                            price.setText("");
+                            description.setText("");
+                            location.setSelectedIndex(0);
+                            category.setSelectedIndex(0);
+                            BackToMain.run();
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Tuotteen lisäys epäonnistui", "virhe", JOptionPane.INFORMATION_MESSAGE);
                         }
-                        else {
-                            JOptionPane.showMessageDialog(null, "Tuotteen lisäys epäonnistui", "virhe", JOptionPane.INFORMATION_MESSAGE);             
-                        }
-                        
+
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                         System.out.println("product add went wrong");
