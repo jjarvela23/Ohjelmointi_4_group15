@@ -18,9 +18,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-
-
-public class MainView extends JPanel{
+public class MainView extends JPanel {
 
     //list of components
     JButton UserButton;
@@ -34,6 +32,8 @@ public class MainView extends JPanel{
     JPanel p1 = new JPanel();
     JPanel p2 = new JPanel();
 
+    JPanel productsPanel = new JPanel(new FlowLayout());
+
     //database reference
     UserDatabase userDatabase = new UserDatabase();
 
@@ -43,12 +43,11 @@ public class MainView extends JPanel{
 
         //TODO splits the panel into two horizontally. change if neccessary.
         JPanel p1 = new JPanel();
-        JPanel p2 = new JPanel();
 
         JSplitPane splitPane = new JSplitPane(SwingConstants.HORIZONTAL, p1, p2);
 
         label = new JLabel();
-        label.setText("testing");
+        label.setText("Käytettyjen tavaroiden kauppapaikka");
 
         //searchbar component
         searchBar = new JTextField(40);
@@ -65,13 +64,11 @@ public class MainView extends JPanel{
                     //sets products the user owns.
                     userView.SetUserProducts();
                     goToUser.run();
-                }
-                else {
+                } else {
                     goToLogin.run();
                 }
             }
         });
-
 
         //same as userbutton, but sends to sellview if the user is logged in.
         SellButton = new JButton("myy");
@@ -80,8 +77,7 @@ public class MainView extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 if (Main.CurrentUser > 0) {
                     SellProduct.run();
-                }
-                else {
+                } else {
                     goToLogin.run();
                 }
             }
@@ -96,68 +92,90 @@ public class MainView extends JPanel{
         p1.add(Category);
         p1.add(UserButton);
         p1.add(SellButton);
-        p1.add(SearchButton); 
+        p1.add(SearchButton);
 
-        this.add(splitPane);
-        }
+        this.add(p1);
+        this.add(productsPanel);
+    }
 
+    //create a list of containers and add them to the main panel.
+    public void SetProducts() {
+        productsPanel.removeAll();
+        try {
+            ResultSet rs = userDatabase.GetAllProducts();
+            while (rs.next()) {
+                JPanel productContainer = new JPanel(new GridLayout(0, 2, 4, 4));
+                productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        //create a list of containers and add them to the main panel.
-        public void SetProducts() {
-            try {
-                ResultSet rs = userDatabase.GetAllProducts();
-                while (rs.next()) {
-                    JPanel productContainer = new JPanel(new GridLayout());
-                    productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
-                    JLabel name = new JLabel("nimi");
-                    JLabel price = new JLabel("hinta");
-                    JLabel location = new JLabel("sijainti");
-                    JLabel ownerLabel = new JLabel("myyjä");
+                String productName = rs.getString("name");
+                String productPrice = rs.getString("price");
+                String productLocation = rs.getString("location");
+                String productDescription = rs.getString("description");
+                String productCategory = rs.getString("category");
+                int owner = rs.getInt("owner");
 
-                    String productName = rs.getString("name");
-                    JLabel nameString = new JLabel(rs.getString("name"));
-                    JLabel priceString = new JLabel(rs.getString("price"));
-                    JLabel locationString = new JLabel(rs.getString("location"));
-                    
-                    productContainer.add(name);
-                    productContainer.add(nameString);
-                    productContainer.add(price);
-                    productContainer.add(priceString);
-                    productContainer.add(location);
-                    productContainer.add(locationString);
-                    int owner = rs.getInt("owner");
-                    ResultSet rs2 = userDatabase.GetUser(owner);
-                    String fullname = "";
-                    String phonenumber = "";
-                    String email = "";
-                    while (rs2.next()) {
-                        fullname = rs2.getString("fullname");
-                        phonenumber = rs2.getString("phonenumber");
-                        email = rs2.getString("email");
-                    }
-                    productContainer.add(ownerLabel);
-                    productContainer.add(new JLabel(fullname));
-                    JButton more = new JButton("näytä lisää");
-                    //TODO
-                    more.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            //in here create a new frame and add all product details as components.
-                            JFrame details = new JFrame(productName);
-                            details.setSize(600, 400);
-                            JPanel innerPanel = new JPanel();
-                            //TODO add to inner panel
-                            details.add(innerPanel);
-                            details.setVisible(true);
-                        }
-                    });
-                    productContainer.add(more);
-                    
-                    this.add(productContainer);
+                String fullname = "";
+                String phonenumber = "";
+                String email = "";
+                ResultSet rs2 = userDatabase.GetUser(owner);
+                while (rs2.next()) {
+                    fullname = rs2.getString("fullname");
+                    phonenumber = rs2.getString("phonenumber");
+                    email = rs2.getString("email");
                 }
+
+                final String sellerName = fullname;
+                final String sellerPhone = phonenumber;
+                final String sellerEmail = email;
+
+                productContainer.add(new JLabel("nimi:"));
+                productContainer.add(new JLabel(productName));
+                productContainer.add(new JLabel("hinta:"));
+                productContainer.add(new JLabel(productPrice));
+                productContainer.add(new JLabel("sijainti:"));
+                productContainer.add(new JLabel(productLocation));
+                productContainer.add(new JLabel("myyjä:"));
+                productContainer.add(new JLabel(sellerName));
+
+                JButton more = new JButton("näytä lisää");
+                more.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JFrame details = new JFrame(productName);
+                        details.setSize(600, 400);
+                        JPanel innerPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+                        innerPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+
+                        innerPanel.add(new JLabel("Nimi:"));
+                        innerPanel.add(new JLabel(productName));
+                        innerPanel.add(new JLabel("Hinta:"));
+                        innerPanel.add(new JLabel(productPrice));
+                        innerPanel.add(new JLabel("Sijainti:"));
+                        innerPanel.add(new JLabel(productLocation));
+                        innerPanel.add(new JLabel("Kategoria:"));
+                        innerPanel.add(new JLabel(productCategory));
+                        innerPanel.add(new JLabel("Kuvaus:"));
+                        innerPanel.add(new JLabel(productDescription));
+                        innerPanel.add(new JLabel("Myyjä:"));
+                        innerPanel.add(new JLabel(sellerName));
+                        innerPanel.add(new JLabel("Puhelin:"));
+                        innerPanel.add(new JLabel(sellerPhone));
+                        innerPanel.add(new JLabel("Sähköposti:"));
+                        innerPanel.add(new JLabel(sellerEmail));
+
+                        details.add(innerPanel);
+                        details.setVisible(true);
+                    }
+                });
+
+                productContainer.add(more);
+                productsPanel.add(productContainer);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            
         }
+
+        revalidate();
+        repaint();
     }
 }

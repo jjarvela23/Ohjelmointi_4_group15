@@ -27,21 +27,22 @@ public class LoginView extends JPanel {
     public LoginView(Runnable goToMain, Runnable GoToRegister, UserView userView) {
         setLayout(new FlowLayout());
 
+        topheader = new JLabel("Kirjaudu sisään");
+
         backButton = new JButton("takaisin");
         backButton.addActionListener(e -> goToMain.run());
 
         loginButton = new JButton("kirjaudu");
-        
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 if (username.getText().isEmpty() || password.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä", "virhe", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else {
+                } else {
                     String uname = username.getText();
-                    String pword = password.getText();    
+                    String pword = password.getText();
                     try {
 
                         if (userDatabase.login(uname, pword) > 0) {
@@ -50,8 +51,7 @@ public class LoginView extends JPanel {
                             Main.CurrentUser = userId;
                             userView.setUser();
                             System.out.println("login succesful");
-                        }
-                        else {
+                        } else {
                             System.out.println("login failed");
                         }
                     } catch (SQLException e1) {
@@ -72,6 +72,7 @@ public class LoginView extends JPanel {
         usernameText = new JLabel("käyttäjänimi");
         passwordText = new JLabel("salasana");
 
+        add(topheader);
         add(backButton);
         add(loginButton);
         add(registerButton);
