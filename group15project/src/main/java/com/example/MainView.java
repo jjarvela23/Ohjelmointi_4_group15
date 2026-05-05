@@ -22,23 +22,26 @@ import javax.swing.SwingConstants;
 
 public class MainView extends JPanel{
 
+    //list of components
     JButton UserButton;
     JButton SellButton;
     JButton SearchButton;
     JLabel label;
     JTextField searchBar;
     JComboBox<String> Category;
-    JComboBox<String> Area;
+    JComboBox<String> Location;
 
     JPanel p1 = new JPanel();
     JPanel p2 = new JPanel();
 
-
+    //database reference
     UserDatabase userDatabase = new UserDatabase();
 
     public MainView(Runnable goToLogin, Runnable SellProduct, Runnable goToUser, UserView userView) {
+        //set panel layout
         setLayout(new FlowLayout());
 
+        //TODO splits the panel into two horizontally. change if neccessary.
         JPanel p1 = new JPanel();
         JPanel p2 = new JPanel();
 
@@ -47,18 +50,11 @@ public class MainView extends JPanel{
         label = new JLabel();
         label.setText("testing");
 
+        //searchbar component
         searchBar = new JTextField(40);
-
-        Area = new JComboBox<>(Main.LocationList);
+        //location and category as a dropdown menu
+        Location = new JComboBox<>(Main.LocationList);
         Category = new JComboBox<>(Main.CateroryList);
-
-        //create a new panel for individual products.
-        JPanel product = new JPanel();
-        product.setLayout(new GridLayout());
-        JLabel prolabel = new JLabel("tuote");
-        JButton probutton = new JButton("nappi");
-        product.add(prolabel);
-        product.add(probutton);   
 
         // make an else-if that checks if the user has logged in. button name changes, and the button sends to a different screen.
         UserButton = new JButton("käyttäjä");
@@ -66,6 +62,7 @@ public class MainView extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (Main.CurrentUser > 0) {
+                    //sets products the user owns.
                     userView.SetUserProducts();
                     goToUser.run();
                 }
@@ -74,7 +71,9 @@ public class MainView extends JPanel{
                 }
             }
         });
-        
+
+
+        //same as userbutton, but sends to sellview if the user is logged in.
         SellButton = new JButton("myy");
         SellButton.addActionListener(new ActionListener() {
             @Override
@@ -93,7 +92,7 @@ public class MainView extends JPanel{
 
         p1.add(label);
         p1.add(searchBar);
-        p1.add(Area);
+        p1.add(Location);
         p1.add(Category);
         p1.add(UserButton);
         p1.add(SellButton);
@@ -105,7 +104,6 @@ public class MainView extends JPanel{
 
         //create a list of containers and add them to the main panel.
         public void SetProducts() {
-            
             try {
                 ResultSet rs = userDatabase.GetAllProducts();
                 while (rs.next()) {

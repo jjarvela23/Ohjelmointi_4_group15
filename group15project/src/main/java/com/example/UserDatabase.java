@@ -33,6 +33,7 @@ public final class UserDatabase {
         }
     }
 
+    //create table Users.
     public void InitializeUsers() throws SQLException {
         
         statement = c.createStatement();
@@ -48,6 +49,7 @@ public final class UserDatabase {
         statement.close();
     }
 
+    //Create table Products. Has a foreign key that references the user that owns that product.
     public void InitializeProducts() throws SQLException {
         statement = c.createStatement();
 

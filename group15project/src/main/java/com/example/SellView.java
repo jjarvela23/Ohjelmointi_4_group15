@@ -20,8 +20,6 @@ public class SellView extends JPanel {
     JLabel locationLabel;
     JLabel DescriptionLabel;
     JLabel categoryLabel;
-    
-
 
     //TODO turn location and category to comboboxes
     JTextField name;
@@ -36,14 +34,17 @@ public class SellView extends JPanel {
     UserDatabase userDatabase = new UserDatabase();
     
     public SellView(Runnable BackToMain, MainView mainView) {
+        //set layout 
         setLayout(new FlowLayout());
 
+        //all text fields for the user input. Description is rectangular.
         name = new JTextField(32);
         price = new JTextField(32);
         location = new JTextField(32);
         description = new JTextArea(20, 20);
         category = new JTextField(32);
         
+        //labels which go next to text fields.
         topHeader = new JLabel("Myydään");
         nameLabel = new JLabel("nimi");
         priceLabel = new JLabel("hinta");
@@ -51,38 +52,45 @@ public class SellView extends JPanel {
         DescriptionLabel = new JLabel("kuvaus");
         categoryLabel = new JLabel("kategoria");
 
+        //return to main view
         BackButton = new JButton("takaisin");
         BackButton.addActionListener(e -> BackToMain.run());
 
+        //confirm the selling.
         ConfirmButton = new JButton("hyväksy");
         ConfirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO catch empty
-                String nam = name.getText();
-                String pri = price.getText();
-                String loca = location.getText();
-                String desc = description.getText();
-                String cate = category.getText();
-
-                try {
+                //check that no field is empty.
+                if (name.getText().isEmpty() || price.getText().isEmpty() || location.getText().isEmpty() || description.getText().isEmpty() || category.getText().isEmpty()) { 
+                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    //get inputs.
+                    String nam = name.getText();
+                    String pri = price.getText();
+                    String loca = location.getText();
+                    String desc = description.getText();
+                    String cate = category.getText();
                     
-                    if (userDatabase.AddProduct(nam, pri, loca, desc, cate)) {
-                        JOptionPane.showMessageDialog(null, "Uusi tuote lisätty", "onnistui", JOptionPane.INFORMATION_MESSAGE); 
-                        System.out.println("toimii");
+                    try {         
+                        //add product to database. Method returns true or false.              
+                        if (userDatabase.AddProduct(nam, pri, loca, desc, cate)) {
+                            JOptionPane.showMessageDialog(null, "Uusi tuote lisätty", "onnistui", JOptionPane.INFORMATION_MESSAGE); 
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "Tuotteen lisäys epäonnistui", "virhe", JOptionPane.INFORMATION_MESSAGE);             
+                        }
+                        
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        System.out.println("product add went wrong");
                     }
-                    else {
-                        JOptionPane.showMessageDialog(null, "Tuotteen lisäys epäonnistui", "virhe", JOptionPane.INFORMATION_MESSAGE);     
-                        System.out.println("ei toimi");           
-                    }
-                    
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    System.out.println("product add went wrong");
                 }
             }
         });
 
+        //add components to the panel
         add(BackButton);
         add(ConfirmButton);
         add(topHeader);
