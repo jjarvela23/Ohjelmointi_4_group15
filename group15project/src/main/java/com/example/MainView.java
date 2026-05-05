@@ -104,14 +104,14 @@ public class MainView extends JPanel {
         try {
             ResultSet rs = userDatabase.GetAllProducts();
             while (rs.next()) {
-                JPanel productContainer = new JPanel(new GridLayout(0, 2, 4, 4)); // CHANGED: was "new GridLayout()" - now 2 columns so labels and values line up
+                JPanel productContainer = new JPanel(new GridLayout(0, 2, 4, 4));
                 productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
 
                 String productName = rs.getString("name");
                 String productPrice = rs.getString("price");
                 String productLocation = rs.getString("location");
-                String productDescription = rs.getString("description"); // CHANGED: new line - now read so it can be shown in detail window
-                String productCategory = rs.getString("category"); // CHANGED: new line - now read so it can be shown in detail window
+                String productDescription = rs.getString("description");
+                String productCategory = rs.getString("category");
                 int owner = rs.getInt("owner");
 
                 String fullname = "";
@@ -124,18 +124,18 @@ public class MainView extends JPanel {
                     email = rs2.getString("email");
                 }
 
-                final String sellerName = fullname; // CHANGED: new line - final copy needed to use inside ActionListener
-                final String sellerPhone = phonenumber; // CHANGED: new line - final copy needed to use inside ActionListener
-                final String sellerEmail = email; // CHANGED: new line - final copy needed to use inside ActionListener
+                final String sellerName = fullname;
+                final String sellerPhone = phonenumber;
+                final String sellerEmail = email;
 
-                productContainer.add(new JLabel("nimi:")); // CHANGED: was "JLabel name = new JLabel("nimi"); productContainer.add(name)"
-                productContainer.add(new JLabel(productName)); // CHANGED: was "JLabel nameString = new JLabel(...)"
-                productContainer.add(new JLabel("hinta:")); // CHANGED: same pattern as above
-                productContainer.add(new JLabel(productPrice)); // CHANGED: same pattern as above
-                productContainer.add(new JLabel("sijainti:")); // CHANGED: same pattern as above
-                productContainer.add(new JLabel(productLocation)); // CHANGED: same pattern as above
-                productContainer.add(new JLabel("myyjä:")); // CHANGED: same pattern as above
-                productContainer.add(new JLabel(sellerName)); // CHANGED: was "new JLabel(fullname)" which wouldn't compile inside listener
+                productContainer.add(new JLabel("nimi:"));
+                productContainer.add(new JLabel(productName));
+                productContainer.add(new JLabel("hinta:"));
+                productContainer.add(new JLabel(productPrice));
+                productContainer.add(new JLabel("sijainti:"));
+                productContainer.add(new JLabel(productLocation));
+                productContainer.add(new JLabel("myyjä:"));
+                productContainer.add(new JLabel(sellerName));
 
                 JButton more = new JButton("näytä lisää");
                 more.addActionListener(new ActionListener() {
@@ -143,25 +143,25 @@ public class MainView extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         JFrame details = new JFrame(productName);
                         details.setSize(600, 400);
-                        JPanel innerPanel = new JPanel(new GridLayout(0, 2, 8, 8)); // CHANGED: was "new JPanel()" - now 2 columns with spacing
-                        innerPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12)); // CHANGED: new line - adds padding inside the detail window
+                        JPanel innerPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+                        innerPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 
-                        innerPanel.add(new JLabel("Nimi:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(productName)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Hinta:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(productPrice)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Sijainti:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(productLocation)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Kategoria:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(productCategory)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Kuvaus:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(productDescription)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Myyjä:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(sellerName)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Puhelin:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(sellerPhone)); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel("Sähköposti:")); // CHANGED: detail window was completely empty (was a TODO)
-                        innerPanel.add(new JLabel(sellerEmail)); // CHANGED: detail window was completely empty (was a TODO)
+                        innerPanel.add(new JLabel("Nimi:"));
+                        innerPanel.add(new JLabel(productName));
+                        innerPanel.add(new JLabel("Hinta:"));
+                        innerPanel.add(new JLabel(productPrice));
+                        innerPanel.add(new JLabel("Sijainti:"));
+                        innerPanel.add(new JLabel(productLocation));
+                        innerPanel.add(new JLabel("Kategoria:"));
+                        innerPanel.add(new JLabel(productCategory));
+                        innerPanel.add(new JLabel("Kuvaus:"));
+                        innerPanel.add(new JLabel(productDescription));
+                        innerPanel.add(new JLabel("Myyjä:"));
+                        innerPanel.add(new JLabel(sellerName));
+                        innerPanel.add(new JLabel("Puhelin:"));
+                        innerPanel.add(new JLabel(sellerPhone));
+                        innerPanel.add(new JLabel("Sähköposti:"));
+                        innerPanel.add(new JLabel(sellerEmail));
 
                         details.add(innerPanel);
                         details.setVisible(true);
@@ -169,13 +169,13 @@ public class MainView extends JPanel {
                 });
 
                 productContainer.add(more);
-                productsPanel.add(productContainer); // CHANGED: was "this.add(productContainer)" - now adds to productsPanel instead
+                productsPanel.add(productContainer);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        revalidate(); // CHANGED: new line - required so the UI actually updates after adding/removing components
-        repaint(); // CHANGED: new line - required so the UI actually redraws after adding/removing components
+        revalidate();
+        repaint();
     }
 }
