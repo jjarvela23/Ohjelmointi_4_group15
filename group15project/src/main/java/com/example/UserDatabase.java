@@ -114,6 +114,14 @@ public final class UserDatabase {
         return 0;  
     }
 
+    public boolean DeleteUser(int userID) throws SQLException {
+        statement = c.createStatement();
+        String query = "DELETE FROM Users WHERE ID = " + userID + ";";
+        statement.executeUpdate(query);
+        statement.close();
+        return true;
+    }
+
     public boolean AddProduct(String name, String price, String location, String description, String category) throws SQLException {
         statement = c.createStatement();
         int owner = Main.CurrentUser;

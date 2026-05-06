@@ -50,7 +50,8 @@ public class LoginView extends JPanel {
                             int userId = userDatabase.login(uname, pword);
                             Main.CurrentUser = userId;
                             userView.setUser();
-                            System.out.println("login succesful");
+                            JOptionPane.showMessageDialog(null, "kirjautuminen onnistui", "", JOptionPane.INFORMATION_MESSAGE);
+                            goToMain.run();
                         } else {
                             System.out.println("login failed");
                         }

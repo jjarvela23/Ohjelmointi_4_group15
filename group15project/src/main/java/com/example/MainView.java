@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -78,6 +79,7 @@ public class MainView extends JPanel {
                 if (Main.CurrentUser > 0) {
                     SellProduct.run();
                 } else {
+                    JOptionPane.showMessageDialog(null, "Et voi myydä ennen kuin kirjaudut sisään", "varoitus", JOptionPane.INFORMATION_MESSAGE);
                     goToLogin.run();
                 }
             }

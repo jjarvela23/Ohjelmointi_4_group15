@@ -3,12 +3,15 @@ package com.example;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class UserView extends JPanel {
@@ -20,6 +23,7 @@ public class UserView extends JPanel {
     JLabel emailLabel;
 
     JButton backButton;
+    JButton deleteUserButton;
 
     JPanel productsPanel = new JPanel(new FlowLayout());
 
@@ -36,8 +40,24 @@ public class UserView extends JPanel {
         phonenumberLabel = new JLabel();
         emailLabel = new JLabel();
 
-        backButton = new JButton("takaisin");
+        backButton = new JButton("etusivu");
         backButton.addActionListener(e -> BackToMain.run());
+
+        deleteUserButton = new JButton("poista tili");
+        deleteUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (userDatabase.DeleteUser(Main.CurrentUser)) {
+                        JOptionPane.showMessageDialog(null, "Käyttäjä poistettu. Palataan etusivulle.", "onnistui", JOptionPane.INFORMATION_MESSAGE);
+                        Main.CurrentUser = 0;
+                        BackToMain.run();
+                    }
+                } catch (SQLException e1) {
+                    System.out.println("failed to delete user");
+                }
+            }
+        });
 
         add(title);
         add(new JLabel("Käyttäjänimi:"));
@@ -48,6 +68,7 @@ public class UserView extends JPanel {
         add(phonenumberLabel);
         add(new JLabel("Sähköposti:"));
         add(emailLabel);
+        add(deleteUserButton);
         add(backButton);
         add(productsPanel);
     }
