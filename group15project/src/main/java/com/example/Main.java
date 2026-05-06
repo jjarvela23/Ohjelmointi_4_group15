@@ -49,7 +49,8 @@ public class Main extends JFrame {
         //add panel to the frame
         frame.add(panel);
         //set frame to screen resolution, preferable TODO
-        frame.setSize(1100, 700);
+        frame.setSize(1150, 700);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 }

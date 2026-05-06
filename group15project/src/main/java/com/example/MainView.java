@@ -1,6 +1,8 @@
 package com.example;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -33,6 +35,7 @@ public class MainView extends JPanel {
     JPanel p1 = new JPanel();
 
     JPanel productsPanel = new JPanel(new FlowLayout());
+    
 
     //database reference
     UserDatabase userDatabase = new UserDatabase();
@@ -41,6 +44,7 @@ public class MainView extends JPanel {
         //set panel layout
         setLayout(new FlowLayout());
 
+        productsPanel.setPreferredSize(new Dimension(1000, 600));
         JPanel p1 = new JPanel();
 
         label = new JLabel();
@@ -98,7 +102,10 @@ public class MainView extends JPanel {
         p1.add(UserButton);
 
         this.add(p1);
-        this.add(productsPanel);
+        //turn productsPanel scrollable
+        JScrollPane scrollPane = new JScrollPane(productsPanel);
+        scrollPane.setPreferredSize(new Dimension(1000, 600));
+        this.add(scrollPane);
     }
 
     //create a list of containers and add them to the main panel.

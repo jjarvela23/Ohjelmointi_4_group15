@@ -1,6 +1,7 @@
 package com.example;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class UserView extends JPanel {
 
@@ -25,6 +27,7 @@ public class UserView extends JPanel {
     JButton backButton;
     JButton deleteUserButton;
 
+    JPanel userPanel = new JPanel(new FlowLayout());
     JPanel productsPanel = new JPanel(new FlowLayout());
 
     UserDatabase userDatabase = new UserDatabase();
@@ -32,7 +35,10 @@ public class UserView extends JPanel {
     public UserView(Runnable BackToMain) {
         //view should look like the users. each user has their own database of products.
         setLayout(new FlowLayout());
-        //adding values to strings from the user database.
+        //set panel sizes
+        userPanel.setPreferredSize(new Dimension(1000, 200));
+        userPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        productsPanel.setPreferredSize(new Dimension(1000, 435));
 
         title = new JLabel("Oma tili");
         usernameLabel = new JLabel();
@@ -62,18 +68,22 @@ public class UserView extends JPanel {
             }
         });
 
-        add(title);
-        add(new JLabel("Käyttäjänimi:"));
-        add(usernameLabel);
-        add(new JLabel("Nimi:"));
-        add(fullnameLabel);
-        add(new JLabel("Puhelin:"));
-        add(phonenumberLabel);
-        add(new JLabel("Sähköposti:"));
-        add(emailLabel);
-        add(deleteUserButton);
-        add(backButton);
-        add(productsPanel);
+        userPanel.add(title);
+        userPanel.add(new JLabel("Käyttäjänimi:"));
+        userPanel.add(usernameLabel);
+        userPanel.add(new JLabel("Nimi:"));
+        userPanel.add(fullnameLabel);
+        userPanel.add(new JLabel("Puhelin:"));
+        userPanel.add(phonenumberLabel);
+        userPanel.add(new JLabel("Sähköposti:"));
+        userPanel.add(emailLabel);
+        userPanel.add(deleteUserButton);
+        userPanel.add(backButton);
+
+        JScrollPane scrollPane = new JScrollPane(productsPanel);
+        scrollPane.setPreferredSize(new Dimension(1000, 435));
+        this.add(userPanel);
+        this.add(scrollPane);
     }
 
     public void setUser() {
