@@ -47,15 +47,18 @@ public class UserView extends JPanel {
         deleteUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if (userDatabase.DeleteUser(Main.CurrentUser)) {
-                        JOptionPane.showMessageDialog(null, "Käyttäjä poistettu. Palataan etusivulle.", "onnistui", JOptionPane.INFORMATION_MESSAGE);
-                        Main.CurrentUser = 0;
-                        BackToMain.run();
+                int confirmResult = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa tilisi?", "Varoitus", JOptionPane.YES_NO_OPTION);
+                if (confirmResult == JOptionPane.YES_OPTION) {
+                    try {
+                        if (userDatabase.DeleteUser(Main.CurrentUser)) {
+                            JOptionPane.showMessageDialog(null, "Käyttäjä poistettu. Palataan etusivulle.", "onnistui", JOptionPane.INFORMATION_MESSAGE);
+                            Main.CurrentUser = 0;
+                            BackToMain.run();
+                        }
+                    } catch (SQLException e1) {
+                        System.out.println("failed to delete user");
                     }
-                } catch (SQLException e1) {
-                    System.out.println("failed to delete user");
-                }
+                }    
             }
         });
 

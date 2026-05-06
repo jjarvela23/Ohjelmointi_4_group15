@@ -53,11 +53,9 @@ public class LoginView extends JPanel {
                             JOptionPane.showMessageDialog(null, "kirjautuminen onnistui", "", JOptionPane.INFORMATION_MESSAGE);
                             goToMain.run();
                         } else {
-                            System.out.println("login failed");
+                            JOptionPane.showMessageDialog(null, "käyttäjänimi tai salasana oli väärin", "virhe", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
-                        System.out.println("Username or password was incorrect");
                         JOptionPane.showMessageDialog(null, "käyttäjänimi tai salasana oli väärin", "virhe", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
