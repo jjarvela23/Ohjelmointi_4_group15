@@ -154,11 +154,24 @@ public final class UserDatabase {
         return rs;
     }
 
+    //for searching
     public ResultSet GetSpecificProducts(String name, String location, String category) throws SQLException {
         statement = c.createStatement();
         String query = "";
-        //different query based on parameters.
-        if (!name.isEmpty()) {
+        //different query based on parameters. many categories go above since its else-if
+        if (!name.isEmpty() && !location.isEmpty() && !category.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE NAME LIKE '%" + name + "%' AND LOCATION ='" + location + "' AND CATEGORY ='" + category + "';" ;
+        }
+        else if (!name.isEmpty() && !location.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE NAME LIKE '%" + name + "%' AND LOCATION ='" + location + "';";
+        }
+        else if (!name.isEmpty() && !category.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE NAME LIKE '%" + name + "%' AND CATEGORY ='" + category + "';";
+        }
+        else if (!location.isEmpty() && !category.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE LOCATION ='" + location + "' AND CATEGORY ='" + category + "';";
+        }
+        else if (!name.isEmpty()) {
             query =  "SELECT * FROM Products WHERE NAME LIKE '%" + name + "%';";
         }
         else if (!location.isEmpty()) {
