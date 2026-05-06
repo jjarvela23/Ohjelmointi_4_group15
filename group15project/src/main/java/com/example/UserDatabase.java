@@ -153,4 +153,24 @@ public final class UserDatabase {
         ResultSet rs = statement.executeQuery(query);
         return rs;
     }
+
+    public ResultSet GetSpecificProducts(String name, String location, String category) throws SQLException {
+        statement = c.createStatement();
+        String query = "";
+        //different query based on parameters.
+        if (!name.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE NAME LIKE '%" + name + "%';";
+        }
+        else if (!location.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE LOCATION ='" + location + "';";
+        }
+        else if (!category.isEmpty()) {
+            query =  "SELECT * FROM Products WHERE CATEGORY ='" + category + "';";
+        }
+        else {
+            query = "SELECT * FROM Products";
+        }
+        ResultSet rs = statement.executeQuery(query);
+        return rs;
+    }
 }

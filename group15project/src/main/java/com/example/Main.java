@@ -44,12 +44,12 @@ public class Main extends JFrame {
         panel.add(registerView, "registerView");
 
         //this adds the existing products in the database to the main view.
-        mainView.SetProducts();
+        mainView.SetProducts(false);
 
         //add panel to the frame
         frame.add(panel);
         //set frame to screen resolution, preferable TODO
-        frame.setSize(1000, 700);
+        frame.setSize(1100, 700);
         frame.setVisible(true);
     }
 }

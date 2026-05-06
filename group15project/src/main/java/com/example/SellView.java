@@ -80,7 +80,7 @@ public class SellView extends JPanel {
                         //add product to database. Method returns true or false.              
                         if (userDatabase.AddProduct(nam, pri, loca, desc, cate)) {
                             JOptionPane.showMessageDialog(null, "Uusi tuote lisätty", "onnistui", JOptionPane.INFORMATION_MESSAGE);
-                            mainView.SetProducts();
+                            mainView.SetProducts(false);
                             name.setText("");
                             price.setText("");
                             description.setText("");

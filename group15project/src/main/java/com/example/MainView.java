@@ -87,6 +87,12 @@ public class MainView extends JPanel {
 
         SearchButton = new JButton("hae");
         //TODO search functionality
+        SearchButton.addActionListener(new ActionListener() {
+             @Override
+            public void actionPerformed(ActionEvent e) {
+                SetProducts(true);
+            }
+        });
 
         p1.add(label);
         p1.add(searchBar);
@@ -101,10 +107,30 @@ public class MainView extends JPanel {
     }
 
     //create a list of containers and add them to the main panel.
-    public void SetProducts() {
+    public void SetProducts(boolean Searching) {
         productsPanel.removeAll();
         try {
-            ResultSet rs = userDatabase.GetAllProducts();
+            ResultSet rs = null;
+            //TODO switch-case for searching. returns a different result set based on what is searched.
+            if (Searching) {
+                String searchName = "";
+                String searchLocation = "";
+                String searchCategory = ""; 
+                if (!searchBar.getText().isEmpty()) {
+                    searchName = searchBar.getText();
+                } 
+                if (!Location.getSelectedItem().toString().isEmpty()) {
+                    searchLocation = (String) Location.getSelectedItem();
+                }
+                if (!Category.getSelectedItem().toString().isEmpty()) {
+                    searchCategory = (String) Category.getSelectedItem();
+                }
+                rs = userDatabase.GetSpecificProducts(searchName, searchLocation, searchCategory);
+            }
+            else {
+                //regular 
+                rs = userDatabase.GetAllProducts();
+            }
             while (rs.next()) {
                 JPanel productContainer = new JPanel(new GridLayout(0, 2, 4, 4));
                 productContainer.setBorder(BorderFactory.createLineBorder(Color.black));

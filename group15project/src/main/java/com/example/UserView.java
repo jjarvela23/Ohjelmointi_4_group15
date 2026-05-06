@@ -92,7 +92,6 @@ public class UserView extends JPanel {
 
     public void SetUserProducts() {
         productsPanel.removeAll();
-
         try {
             ResultSet rs = userDatabase.GetProductsFromUser(Main.CurrentUser);
             while (rs.next()) {
