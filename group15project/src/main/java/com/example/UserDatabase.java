@@ -28,8 +28,7 @@ public final class UserDatabase {
             InitializeProducts();
             
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("Failed to create tables");
         }
     }
 
@@ -138,7 +137,6 @@ public final class UserDatabase {
         return true;
     }
 
-    //TODO for userView
     public ResultSet GetProductsFromUser(int userid) throws SQLException {
         statement = c.createStatement();
         String query = "SELECT * FROM Products WHERE OWNER ='" + userid + "';";
@@ -146,7 +144,6 @@ public final class UserDatabase {
         return rs;
     }
 
-    //TODO for mainView
     public ResultSet GetAllProducts() throws SQLException {
         statement = c.createStatement();
         String query = "SELECT * FROM Products";

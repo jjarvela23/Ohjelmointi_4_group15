@@ -86,7 +86,6 @@ public class MainView extends JPanel {
         });
 
         SearchButton = new JButton("hae");
-        //TODO search functionality
         SearchButton.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,9 +97,9 @@ public class MainView extends JPanel {
         p1.add(searchBar);
         p1.add(Location);
         p1.add(Category);
-        p1.add(UserButton);
-        p1.add(SellButton);
         p1.add(SearchButton);
+        p1.add(SellButton);
+        p1.add(UserButton);
 
         this.add(p1);
         this.add(productsPanel);
@@ -111,7 +110,6 @@ public class MainView extends JPanel {
         productsPanel.removeAll();
         try {
             ResultSet rs = null;
-            //TODO switch-case for searching. returns a different result set based on what is searched.
             if (Searching) {
                 String searchName = "";
                 String searchLocation = "";
@@ -200,7 +198,7 @@ public class MainView extends JPanel {
                 productsPanel.add(productContainer);
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.out.println("Failed to add products to main");
         }
 
         revalidate();

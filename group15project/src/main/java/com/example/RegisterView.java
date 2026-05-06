@@ -78,7 +78,6 @@ public class RegisterView extends JPanel{
                         }
                         
                     } catch (SQLException ex) {
-                        ex.printStackTrace();
                         System.out.println("registration went wrong");
                     }
                 }

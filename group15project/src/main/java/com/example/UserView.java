@@ -86,7 +86,7 @@ public class UserView extends JPanel {
                 emailLabel.setText(rs.getString("email"));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.out.println("Failure to set user in UserView");
         }
     }
 
@@ -108,7 +108,7 @@ public class UserView extends JPanel {
                 productsPanel.add(productContainer);
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.out.println("Failure to add products to user view");
         }
 
         revalidate();

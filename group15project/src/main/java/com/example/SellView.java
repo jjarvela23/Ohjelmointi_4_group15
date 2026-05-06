@@ -22,7 +22,6 @@ public class SellView extends JPanel {
     JLabel DescriptionLabel;
     JLabel categoryLabel;
 
-    //TODO turn location and category to comboboxes
     JTextField name;
     JTextField price;
     JTextArea description;
@@ -93,7 +92,6 @@ public class SellView extends JPanel {
                         }
 
                     } catch (SQLException ex) {
-                        ex.printStackTrace();
                         System.out.println("product add went wrong");
                     }
                 }
