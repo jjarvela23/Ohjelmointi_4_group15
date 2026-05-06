@@ -31,7 +31,6 @@ public class MainView extends JPanel {
     JComboBox<String> Location;
 
     JPanel p1 = new JPanel();
-    JPanel p2 = new JPanel();
 
     JPanel productsPanel = new JPanel(new FlowLayout());
 
@@ -42,10 +41,7 @@ public class MainView extends JPanel {
         //set panel layout
         setLayout(new FlowLayout());
 
-        //TODO splits the panel into two horizontally. change if neccessary.
         JPanel p1 = new JPanel();
-
-        JSplitPane splitPane = new JSplitPane(SwingConstants.HORIZONTAL, p1, p2);
 
         label = new JLabel();
         label.setText("Käytettyjen tavaroiden kauppapaikka");

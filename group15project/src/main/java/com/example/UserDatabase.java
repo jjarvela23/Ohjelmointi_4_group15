@@ -183,4 +183,12 @@ public final class UserDatabase {
         ResultSet rs = statement.executeQuery(query);
         return rs;
     }
+
+    public boolean deleteProduct(int productID) throws SQLException {
+        statement = c.createStatement();
+        String query = "DELETE FROM Products WHERE ID = " + productID + ";";
+        statement.executeUpdate(query);
+        statement.close();
+        return true;
+    }
 }

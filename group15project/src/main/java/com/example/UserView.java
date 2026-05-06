@@ -105,6 +105,29 @@ public class UserView extends JPanel {
                 productContainer.add(new JLabel("sijainti:"));
                 productContainer.add(new JLabel(rs.getString("location")));
 
+                int id = rs.getInt("ID");
+
+                JButton deleteProduct = new JButton();
+                deleteProduct.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        int confirmResult = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa tuotteen?", "Varoitus", JOptionPane.YES_NO_OPTION);
+                        if (confirmResult == JOptionPane.YES_OPTION) {
+                            try {
+                                if (userDatabase.deleteProduct(id)) {
+                                    JOptionPane.showMessageDialog(null, "tuote poistettu.", "onnistui", JOptionPane.INFORMATION_MESSAGE);
+                                    SetUserProducts();
+                                    //TODO find a way to call SetProducts(false) on main.
+                                }
+                            } catch (SQLException e1) {
+                                System.out.println("failed to delete user");
+                            }
+                        }    
+                    }
+                });
+                //add to container
+                productContainer.add(deleteProduct);
+
                 productsPanel.add(productContainer);
             }
         } catch (SQLException ex) {
