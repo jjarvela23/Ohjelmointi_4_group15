@@ -38,18 +38,21 @@ public class LoginView extends JPanel {
 
     public LoginView(Runnable goToMain, Runnable GoToRegister, UserView userView) {
 
+        //create a panel where the components will be put
         JPanel mainPanel = new JPanel();
         mainPanel.setSize(new Dimension(800,600));
+        //outer border and an empty line border to add an inset.
         mainPanel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         topheader = new JLabel("Kirjaudu sisään");
 
+        //returns to main view
         backButton = new JButton("takaisin");
         backButton.addActionListener(e -> goToMain.run());
 
+        //confirms the login. Checks if the text fields are empty. Checks if the user exists in the database, and if the password is correct.
         loginButton = new JButton("kirjaudu");
-
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,8 +68,10 @@ public class LoginView extends JPanel {
                             //do login stuff
                             int userId = userDatabase.login(uname, pword);
                             Main.CurrentUser = userId;
+                            //updates the view in another class.
                             userView.setUser();
                             JOptionPane.showMessageDialog(null, "kirjautuminen onnistui", "", JOptionPane.INFORMATION_MESSAGE);
+                            //go back to main
                             goToMain.run();
                         } else {
                             JOptionPane.showMessageDialog(null, "käyttäjänimi tai salasana oli väärin", "virhe", JOptionPane.INFORMATION_MESSAGE);
@@ -89,7 +94,7 @@ public class LoginView extends JPanel {
 
         JPanel TopRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         TopRow.add(topheader);
-        TopRow.add(Box.createRigidArea(new Dimension(40, 0)));
+        TopRow.add(Box.createRigidArea(new Dimension(240, 0)));
         TopRow.add(backButton);
         JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonRow.add(loginButton, BorderLayout.WEST);
@@ -102,7 +107,6 @@ public class LoginView extends JPanel {
         mainPanel.add(createRow(passwordText, password));
         mainPanel.add(Box.createRigidArea(d));
         mainPanel.add(buttonRow);
-
         this.add(mainPanel);
     }
 

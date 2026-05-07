@@ -8,13 +8,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.jar.JarFile;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 public class UserView extends JPanel {
 
@@ -114,10 +118,9 @@ public class UserView extends JPanel {
                 productContainer.add(new JLabel(rs.getString("price")));
                 productContainer.add(new JLabel("sijainti:"));
                 productContainer.add(new JLabel(rs.getString("location")));
-
                 int id = rs.getInt("ID");
 
-                JButton deleteProduct = new JButton();
+                JButton deleteProduct = new JButton("poista");
                 deleteProduct.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -135,7 +138,16 @@ public class UserView extends JPanel {
                         }    
                     }
                 });
+
+                JButton editButton = new JButton("muokkaa");
+                editButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        EditProduct(id);
+                    }
+                });
                 //add to container
+                productContainer.add(editButton);
                 productContainer.add(deleteProduct);
 
                 productsPanel.add(productContainer);
@@ -143,8 +155,87 @@ public class UserView extends JPanel {
         } catch (SQLException ex) {
             System.out.println("Failure to add products to user view");
         }
-
         revalidate();
         repaint();
+    }
+
+    private void EditProduct(int id) {
+        JFrame editFrame = new JFrame();
+        editFrame.setSize(600,400);
+        JPanel innerPanel = new JPanel(new GridLayout(0,2,8,8));
+        innerPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+        ResultSet rs1;
+        JTextField name = new JTextField(32);
+        JTextField price = new JTextField(32);
+        JComboBox location = new JComboBox<>(Main.LocationList);
+        JTextField description = new JTextField(32);
+        JComboBox category = new JComboBox<>(Main.CateroryList);
+        try {
+            rs1 = userDatabase.GetProductById(id);
+            while (rs1.next()) {
+                name.setText(rs1.getString("name"));
+                price.setText(rs1.getString("price"));
+                description.setText(rs1.getString("description"));
+            }          
+        } catch (SQLException e) {
+            System.out.println("failed to receive product");
+        }
+        innerPanel.add(new JLabel("nimi"));
+        innerPanel.add(name);
+        innerPanel.add(new JLabel("hinta"));
+        innerPanel.add(price);
+        innerPanel.add(new JLabel("kuvaus"));
+        innerPanel.add(description);
+        innerPanel.add(new JLabel("kategoria"));
+        innerPanel.add(category);
+        innerPanel.add(new JLabel("sijainti"));
+        innerPanel.add(location);
+
+        JButton confirm = new JButton("hyväksy");
+        confirm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedLocation = (String) location.getSelectedItem();
+                String selectedCategory = (String) category.getSelectedItem();
+                if (name.getText().isEmpty() || price.getText().isEmpty() || selectedLocation.equals("sijainti") || description.getText().isEmpty() || selectedCategory.equals("kategoria")) {
+                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä (tai valitse kategoria ja sijainti) ", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String nam = name.getText();
+                    String pri = price.getText();
+                    String loca = selectedLocation;
+                    String desc = description.getText();
+                    String cate = selectedCategory;
+                    
+                    try {
+                        if (userDatabase.updateProductById(id, nam, pri, loca, desc, cate)) {
+                            JOptionPane.showMessageDialog(null, "Tuote päivitetty", "onnistui", JOptionPane.INFORMATION_MESSAGE);
+                            SetUserProducts();
+                            editFrame.dispose();
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "Tuotteen päivitys epäonnistui", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        System.out.println("product edit went wrong");
+                    }
+                }
+            }
+        });
+
+        JButton back = new JButton("peru");
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editFrame.dispose();
+            }
+        });
+
+        innerPanel.add(confirm);
+        innerPanel.add(back);
+
+        editFrame.add(innerPanel);
+        editFrame.setLocationRelativeTo(null);
+        editFrame.setVisible(true);
     }
 }

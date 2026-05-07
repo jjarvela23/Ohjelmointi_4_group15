@@ -151,6 +151,26 @@ public final class UserDatabase {
         return rs;
     }
 
+    public ResultSet GetProductById(int id) throws SQLException {
+        statement = c.createStatement();
+        String query = "SELECT * FROM Products WHERE ID ='" + id + "';";
+        ResultSet rs = statement.executeQuery(query);
+        return rs;
+    }
+
+    public boolean updateProductById(int id, String name, String price, String location, String description, String category) throws SQLException {
+        statement = c.createStatement();
+        String query = "UPDATE Products SET " +
+        "NAME = '" + name + "', " + 
+        "PRICE = '" + price + "', " + 
+        "LOCATION = '" + location + "', " + 
+        "DESCRIPTION = '" + description + "', " + 
+        "CATEGORY = '" + category + "' " + 
+        "WHERE ID = '" + id + "';";
+        statement.executeUpdate(query);
+        return true;
+    }
+
     //for searching
     public ResultSet GetSpecificProducts(String name, String location, String category) throws SQLException {
         statement = c.createStatement();

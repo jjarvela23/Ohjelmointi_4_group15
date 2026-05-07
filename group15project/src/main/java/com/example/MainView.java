@@ -191,6 +191,7 @@ public class MainView extends JPanel {
                         innerPanel.add(new JLabel(sellerEmail));
 
                         details.add(innerPanel);
+                        details.setLocationRelativeTo(null);
                         details.setVisible(true);
                     }
                 });
