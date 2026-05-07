@@ -3,6 +3,7 @@ package com.example;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -101,7 +102,7 @@ public class RegisterView extends JPanel{
         JPanel topRow = new JPanel(new BorderLayout(200,0));
         topRow.add(Box.createRigidArea(d), BorderLayout.WEST);
         topRow.add(topheader, BorderLayout.CENTER);
-        JPanel buttonRow = new JPanel(new BorderLayout(100,0));
+        JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonRow.add(confirmButton, BorderLayout.WEST);
         buttonRow.add(backButton, BorderLayout.EAST);
         mainPanel.add(topRow, BorderLayout.CENTER);
