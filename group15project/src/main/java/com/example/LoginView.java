@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -89,8 +88,9 @@ public class LoginView extends JPanel {
         passwordText = new JLabel("salasana");
 
         JPanel TopRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        TopRow.add(topheader, BorderLayout.CENTER);
-        TopRow.add(backButton, BorderLayout.EAST);
+        TopRow.add(topheader);
+        TopRow.add(Box.createRigidArea(new Dimension(40, 0)));
+        TopRow.add(backButton);
         JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonRow.add(loginButton, BorderLayout.WEST);
         buttonRow.add(registerButton, BorderLayout.EAST);
@@ -108,8 +108,8 @@ public class LoginView extends JPanel {
 
     private JPanel createRow(JLabel label, JTextField text) {
             JPanel row = new JPanel(new BorderLayout(10,0));
-            row.add(label, BorderLayout.WEST);
-            row.add(text, BorderLayout.CENTER);
+            row.add(label, BorderLayout.CENTER);
+            row.add(text, BorderLayout.EAST);
             return row;
         }
 }

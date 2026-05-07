@@ -126,8 +126,8 @@ public class RegisterView extends JPanel{
 
     private JPanel createRow(JLabel label, JTextField text) {
             JPanel row = new JPanel(new BorderLayout(10,0));
-            row.add(label, BorderLayout.WEST);
-            row.add(text, BorderLayout.CENTER);
+            row.add(label, BorderLayout.CENTER);
+            row.add(text, BorderLayout.EAST);
             return row;
         }
 }

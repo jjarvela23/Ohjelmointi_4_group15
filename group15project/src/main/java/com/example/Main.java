@@ -51,6 +51,7 @@ public class Main extends JFrame {
         //set frame to screen resolution, preferable TODO
         frame.setSize(1150, 700);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
