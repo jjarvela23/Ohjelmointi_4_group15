@@ -120,10 +120,10 @@ public class MainView extends JPanel {
                 if (!searchBar.getText().isEmpty()) {
                     searchName = searchBar.getText();
                 } 
-                if (!Location.getSelectedItem().toString().isEmpty()) {
+                if (!Location.getSelectedItem().toString().equals("sijainti")) {
                     searchLocation = (String) Location.getSelectedItem();
                 }
-                if (!Category.getSelectedItem().toString().isEmpty()) {
+                if (!Category.getSelectedItem().toString().equals("kategoria")) {
                     searchCategory = (String) Category.getSelectedItem();
                 }
                 rs = userDatabase.GetSpecificProducts(searchName, searchLocation, searchCategory);

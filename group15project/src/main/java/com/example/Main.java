@@ -13,8 +13,8 @@ public class Main extends JFrame {
 
     //TODO
     //Global array that contains categories and locations
-    public static String[] CateroryList = {"", "elektroniikka", "z" };
-    public static String[] LocationList = {"", "pohjanmaa", "z" };
+    public static String[] CateroryList = {"kategoria", "elektroniikka", "z" };
+    public static String[] LocationList = {"sijainti", "pohjanmaa", "z" };
 
     public static void main(String[] args) {
         

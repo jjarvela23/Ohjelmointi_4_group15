@@ -1,15 +1,22 @@
 package com.example;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class RegisterView extends JPanel{
 
@@ -27,11 +34,18 @@ public class RegisterView extends JPanel{
     JButton confirmButton;
     JButton backButton;
 
+    Dimension d = new Dimension(0, 10);
+
     UserDatabase userDatabase = new UserDatabase();
 
     public RegisterView(Runnable BackToLogin) {
         //set panel layout
-        setLayout(new FlowLayout());
+        
+        JPanel mainPanel = new JPanel();
+        mainPanel.setSize(new Dimension(800,600));
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
 
         username = new JTextField(32);
         password = new JTextField(32);
@@ -39,7 +53,7 @@ public class RegisterView extends JPanel{
         phoneNumber = new JTextField(32);
         email = new JTextField(32);
 
-        topheader = new JLabel("rekisteröinti");
+        topheader = new JLabel("luo tili");
         usernameText = new JLabel("käyttäjänimi");
         passwordText = new JLabel("salasana");
         fullnameText = new JLabel("etu-ja sukunimi");
@@ -84,18 +98,35 @@ public class RegisterView extends JPanel{
             }
         });
 
-        add(topheader);
-        add(confirmButton);
-        add(backButton);
-        add(usernameText);
-        add(username);
-        add(passwordText);
-        add(password);
-        add(fullnameText);
-        add(fullname);
-        add(phoneNumberText);
-        add(phoneNumber);
-        add(emailText);
-        add(email);
+        JPanel topRow = new JPanel(new BorderLayout(200,0));
+        topRow.add(Box.createRigidArea(d), BorderLayout.WEST);
+        topRow.add(topheader, BorderLayout.CENTER);
+        JPanel buttonRow = new JPanel(new BorderLayout(100,0));
+        buttonRow.add(confirmButton, BorderLayout.WEST);
+        buttonRow.add(backButton, BorderLayout.EAST);
+        mainPanel.add(topRow, BorderLayout.CENTER);
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(usernameText, username));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(passwordText, password));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(fullnameText, fullname));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(phoneNumberText, phoneNumber));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(emailText, email));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(buttonRow);
+
+        add(mainPanel);
+
+        
     }
+
+    private JPanel createRow(JLabel label, JTextField text) {
+            JPanel row = new JPanel(new BorderLayout(10,0));
+            row.add(label, BorderLayout.WEST);
+            row.add(text, BorderLayout.CENTER);
+            return row;
+        }
 }

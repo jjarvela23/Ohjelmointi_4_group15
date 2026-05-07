@@ -1,15 +1,19 @@
 package com.example;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class LoginView extends JPanel {
 
@@ -22,10 +26,18 @@ public class LoginView extends JPanel {
     JButton registerButton;
     JButton backButton;
 
+    JPanel mainPanel = new JPanel();
+
     UserDatabase userDatabase = new UserDatabase();
 
     public LoginView(Runnable goToMain, Runnable GoToRegister, UserView userView) {
-        setLayout(new FlowLayout());
+
+        SpringLayout layout = new SpringLayout();
+        
+        mainPanel.setLayout(new FlowLayout());
+
+        mainPanel.setPreferredSize(new Dimension(600, 400));
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         topheader = new JLabel("Kirjaudu sisään");
 
@@ -71,13 +83,15 @@ public class LoginView extends JPanel {
         usernameText = new JLabel("käyttäjänimi");
         passwordText = new JLabel("salasana");
 
-        add(topheader);
-        add(backButton);
-        add(loginButton);
-        add(registerButton);
-        add(usernameText);
-        add(username);
-        add(passwordText);
-        add(password);
+        mainPanel.add(topheader);
+        mainPanel.add(backButton);
+        mainPanel.add(usernameText);
+        mainPanel.add(username);
+        mainPanel.add(passwordText);
+        mainPanel.add(password);
+        mainPanel.add(loginButton);
+        mainPanel.add(registerButton);
+
+        this.add(mainPanel);
     }
 }
