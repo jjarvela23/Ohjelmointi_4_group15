@@ -93,6 +93,17 @@ public final class UserDatabase {
             return 1;
     }
 
+    public boolean UpdateUser(int id, String fullname, String phonenumber, String email) throws SQLException {
+        statement = c.createStatement();
+        String query = "UPDATE Users SET " +
+        "FULLNAME = '" + fullname + "', " + 
+        "PHONENUMBER = '" + phonenumber + "', " + 
+        "EMAIL = '" + email + "' " + 
+        "WHERE ID = '" + id + "';";
+        statement.executeUpdate(query);
+        return true;
+    }
+
     public int login(String username, String password) throws SQLException {
         statement = c.createStatement();
         ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE USERNAME ='" + username + "';");

@@ -80,11 +80,22 @@ public class UserView extends JPanel {
             }
         });
 
+        JButton editUserButton = new JButton("muokkaa");
+            editUserButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    EditUser(Main.CurrentUser);
+                }
+            });
+
         userPanel.add(createRow(new JLabel("käyttäjänimi:"), usernameLabel));
         userPanel.add(createRow(new JLabel("nimi:"), fullnameLabel));
         userPanel.add(createRow(new JLabel("puhelinnumero:"), phonenumberLabel));
         userPanel.add(createRow(new JLabel("sähköposti:"), emailLabel));
-        userPanel.add(deleteUserButton);
+        JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonRow.add(editUserButton, BorderLayout.WEST);
+        buttonRow.add(deleteUserButton, BorderLayout.EAST);
+        userPanel.add(buttonRow);
         JPanel box = new JPanel(new FlowLayout());
         box.add(new JLabel("oma tili"));
         box.add(backButton);
@@ -172,6 +183,81 @@ public class UserView extends JPanel {
         }
         revalidate();
         repaint();
+    }
+
+    private void EditUser(int id) {
+        JFrame editFrame = new JFrame();
+        editFrame.setSize(600,400);
+        JPanel innerPanel = new JPanel(new GridLayout(0,2,8,8));
+        innerPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+        ResultSet rs;
+        JLabel username = new JLabel();
+        JTextField fullname = new JTextField(32);
+        JTextField phonenumber = new JTextField(32);
+        JTextField email = new JTextField(32);
+        try {
+            rs = userDatabase.GetUser(id);
+            while (rs.next()) {
+                username.setText(rs.getString("username"));
+                fullname.setText(rs.getString("fullname"));
+                phonenumber.setText(rs.getString("phonenumber"));
+                email.setText(rs.getString("email"));
+            }          
+        } catch (SQLException e) {
+            System.out.println("failed to receive user");
+        }
+        innerPanel.add(new JLabel("käyttäjänimi"));
+        innerPanel.add(username);
+        innerPanel.add(new JLabel("nimi"));
+        innerPanel.add(fullname);
+        innerPanel.add(new JLabel("puhelinnumero"));
+        innerPanel.add(phonenumber);
+        innerPanel.add(new JLabel("email"));
+        innerPanel.add(email);
+
+        JButton confirm = new JButton("hyväksy");
+        confirm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fullname.getText().isEmpty() || phonenumber.getText().isEmpty() || email.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä ", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String full = fullname.getText();
+                    String phone = phonenumber.getText();
+                    String mail = email.getText();
+                    
+                    try {
+                        if (userDatabase.UpdateUser(id, full, phone, mail)) {
+                            JOptionPane.showMessageDialog(null, "käyttäjä päivitetty", "onnistui", JOptionPane.INFORMATION_MESSAGE);
+                            setUser();
+                            //TODO call mainview
+                            editFrame.dispose();
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "käyttäjän päivitys epäonnistui", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        System.out.println("user edit went wrong");
+                    }
+                }
+            }
+        });
+
+        JButton back = new JButton("peru");
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editFrame.dispose();
+            }
+        });
+
+        innerPanel.add(confirm);
+        innerPanel.add(back);
+
+        editFrame.add(innerPanel);
+        editFrame.setLocationRelativeTo(null);
+        editFrame.setVisible(true);
     }
 
     private void EditProduct(int id) {
