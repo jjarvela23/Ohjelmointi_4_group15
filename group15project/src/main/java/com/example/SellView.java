@@ -1,18 +1,26 @@
 package com.example;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
+//view for selling new products. Only available after logging in.
 public class SellView extends JPanel {
 
     JLabel topHeader;
@@ -24,12 +32,14 @@ public class SellView extends JPanel {
 
     JTextField name;
     JTextField price;
-    JTextArea description;
+    JTextField description;
     JComboBox<String> location;
     JComboBox<String> category;
 
     JButton ConfirmButton;
     JButton BackButton;
+
+    Dimension d = new Dimension(0, 15);
 
     UserDatabase userDatabase = new UserDatabase();
 
@@ -37,12 +47,17 @@ public class SellView extends JPanel {
         //set layout 
         setLayout(new FlowLayout());
 
+        JPanel mainPanel = new JPanel();
+        mainPanel.setSize(new Dimension(800,600));
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
         //all text fields for the user input. Description is rectangular.
         name = new JTextField(32);
         price = new JTextField(32);
         location = new JComboBox<>(Main.LocationList);
         category = new JComboBox<>(Main.CateroryList);
-        description = new JTextArea(5, 32);
+        description = new JTextField(32);
 
         //labels which go next to text fields.
         topHeader = new JLabel("Myydään");
@@ -65,8 +80,8 @@ public class SellView extends JPanel {
                 String selectedCategory = (String) category.getSelectedItem();
 
                 //check that no field is empty.
-                if (name.getText().isEmpty() || price.getText().isEmpty() || selectedLocation.isEmpty() || description.getText().isEmpty() || selectedCategory.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä", "virhe", JOptionPane.INFORMATION_MESSAGE);
+                if (name.getText().isEmpty() || price.getText().isEmpty() || selectedLocation.equals("sijainti") || description.getText().isEmpty() || selectedCategory.equals("kategoria")) {
+                    JOptionPane.showMessageDialog(null, "yksi tai useampi kenttä oli tyhjä (tai valitse kategoria ja sijainti) ", "virhe", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     //get inputs.
                     String nam = name.getText();
@@ -99,19 +114,42 @@ public class SellView extends JPanel {
         });
 
         //add components to the panel
-        add(BackButton);
-        add(ConfirmButton);
-        add(topHeader);
-        add(nameLabel);
-        add(name);
-        add(priceLabel);
-        add(price);
-        add(DescriptionLabel);
-        add(description);
-        add(categoryLabel);
-        add(category);
-        add(locationLabel);
-        add(location);
+        JPanel topRow = new JPanel(new BorderLayout(200,0));
+        topRow.add(Box.createRigidArea(d), BorderLayout.WEST);
+        topRow.add(topHeader, BorderLayout.CENTER);
+        JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonRow.add(ConfirmButton, BorderLayout.WEST);
+        buttonRow.add(BackButton, BorderLayout.EAST);
+        mainPanel.add(topRow);
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(nameLabel, name));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(priceLabel, price));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow(DescriptionLabel, description));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow2(categoryLabel, category));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(createRow2(locationLabel, location));
+        mainPanel.add(Box.createRigidArea(d));
+        mainPanel.add(buttonRow);
+
+        this.add(mainPanel);
 
     }
+
+    //method to create label + textfield rows
+    private JPanel createRow(JLabel label, JTextField text) {
+            JPanel row = new JPanel(new BorderLayout(10,0));
+            row.add(label, BorderLayout.CENTER);
+            row.add(text, BorderLayout.EAST);
+            return row;
+        }
+    //same but for combobox
+    private JPanel createRow2(JLabel label, JComboBox text) {
+            JPanel row = new JPanel(new BorderLayout(10,0));
+            row.add(label, BorderLayout.CENTER);
+            row.add(text, BorderLayout.EAST);
+            return row;
+        }
 }
