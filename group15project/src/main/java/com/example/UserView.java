@@ -1,5 +1,6 @@
 package com.example;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,9 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.jar.JarFile;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class UserView extends JPanel {
 
@@ -31,8 +34,11 @@ public class UserView extends JPanel {
     JButton backButton;
     JButton deleteUserButton;
 
-    JPanel userPanel = new JPanel(new FlowLayout());
+    JPanel topPanel = new JPanel();
+    JPanel userPanel = new JPanel();
+    
     JPanel productsPanel = new JPanel(new FlowLayout());
+
 
     UserDatabase userDatabase = new UserDatabase();
 
@@ -40,8 +46,10 @@ public class UserView extends JPanel {
         //view should look like the users. each user has their own database of products.
         setLayout(new FlowLayout());
         //set panel sizes
-        userPanel.setPreferredSize(new Dimension(1000, 200));
-        userPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        topPanel.setLayout(new BorderLayout());
+        topPanel.setPreferredSize(new Dimension(1000, 200));
+        userPanel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+        userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
         productsPanel.setPreferredSize(new Dimension(1000, 435));
 
         title = new JLabel("Oma tili");
@@ -72,21 +80,21 @@ public class UserView extends JPanel {
             }
         });
 
-        userPanel.add(title);
-        userPanel.add(new JLabel("Käyttäjänimi:"));
-        userPanel.add(usernameLabel);
-        userPanel.add(new JLabel("Nimi:"));
-        userPanel.add(fullnameLabel);
-        userPanel.add(new JLabel("Puhelin:"));
-        userPanel.add(phonenumberLabel);
-        userPanel.add(new JLabel("Sähköposti:"));
-        userPanel.add(emailLabel);
+        userPanel.add(createRow(new JLabel("käyttäjänimi:"), usernameLabel));
+        userPanel.add(createRow(new JLabel("nimi:"), fullnameLabel));
+        userPanel.add(createRow(new JLabel("puhelinnumero:"), phonenumberLabel));
+        userPanel.add(createRow(new JLabel("sähköposti:"), emailLabel));
         userPanel.add(deleteUserButton);
-        userPanel.add(backButton);
+        JPanel box = new JPanel(new FlowLayout());
+        box.add(new JLabel("oma tili"));
+        box.add(backButton);
+        topPanel.add(box, BorderLayout.EAST);
+        topPanel.add(userPanel, BorderLayout.WEST);
 
+        //convert productpanel to a scrollable panel
         JScrollPane scrollPane = new JScrollPane(productsPanel);
         scrollPane.setPreferredSize(new Dimension(1000, 435));
-        this.add(userPanel);
+        this.add(topPanel);
         this.add(scrollPane);
     }
 
@@ -103,6 +111,13 @@ public class UserView extends JPanel {
             System.out.println("Failure to set user in UserView");
         }
     }
+
+    private JPanel createRow(JLabel label, JLabel text) {
+            JPanel row = new JPanel(new BorderLayout(10,0));
+            row.add(label, BorderLayout.CENTER);
+            row.add(text, BorderLayout.EAST);
+            return row;
+        }
 
     public void SetUserProducts() {
         productsPanel.removeAll();
@@ -210,6 +225,7 @@ public class UserView extends JPanel {
                         if (userDatabase.updateProductById(id, nam, pri, loca, desc, cate)) {
                             JOptionPane.showMessageDialog(null, "Tuote päivitetty", "onnistui", JOptionPane.INFORMATION_MESSAGE);
                             SetUserProducts();
+                            //TODO call mainview
                             editFrame.dispose();
                         }
                         else {
