@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+//SQLITE database for all database related things. Contains two tables: Users and Products.
 public final class UserDatabase {
 
     Connection c = null;
@@ -57,7 +57,7 @@ public final class UserDatabase {
                         " NAME TEXT NOT NULL," +
                         " PRICE TEXT NOT NULL," + 
                         " LOCATION TEXT NOT NULL," + 
-                        " DESCRIPTION TEXT," +
+                        " DESCRIPTION VARCHAR(30)," +
                         " CATEGORY TEXT," +
                         " OWNER INT," + 
                         " FOREIGN KEY (OWNER) REFERENCES Users(ID))";
@@ -65,17 +65,18 @@ public final class UserDatabase {
         statement.close();
     }
 
+    //get user from id
     public ResultSet GetUser(int id) throws SQLException {
         statement = c.createStatement();
         ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE ID = "+ id + ";");
         return rs;
     }
 
-        
-
+    //adds a new user to database
     public int AddUser(String username, String password, String fullname, String phonenumber, String email) throws SQLException {
             statement = c.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM Users;");
+            //checks if username exists
             while (rs.next()) {
                 if (rs.getString("username").equals(username)) {
                     return 2;
@@ -93,6 +94,7 @@ public final class UserDatabase {
             return 1;
     }
 
+    //update specific user information
     public boolean UpdateUser(int id, String fullname, String phonenumber, String email) throws SQLException {
         statement = c.createStatement();
         String query = "UPDATE Users SET " +
@@ -104,6 +106,7 @@ public final class UserDatabase {
         return true;
     }
 
+    //login checks if given password matches the one in the database. Returns the id belonging to the username
     public int login(String username, String password) throws SQLException {
         statement = c.createStatement();
         ResultSet rs = statement.executeQuery("SELECT * FROM Users WHERE USERNAME ='" + username + "';");
@@ -124,6 +127,7 @@ public final class UserDatabase {
         return 0;  
     }
 
+    //deletes the specific user
     public boolean DeleteUser(int userID) throws SQLException {
         statement = c.createStatement();
         String query = "DELETE FROM Users WHERE ID = " + userID + ";";
@@ -132,6 +136,7 @@ public final class UserDatabase {
         return true;
     }
 
+    //adds a new product to the database
     public boolean AddProduct(String name, String price, String location, String description, String category) throws SQLException {
         statement = c.createStatement();
         int owner = Main.CurrentUser;
@@ -148,6 +153,7 @@ public final class UserDatabase {
         return true;
     }
 
+    //returns all products that a specific user owns
     public ResultSet GetProductsFromUser(int userid) throws SQLException {
         statement = c.createStatement();
         String query = "SELECT * FROM Products WHERE OWNER ='" + userid + "';";
@@ -155,6 +161,7 @@ public final class UserDatabase {
         return rs;
     }
 
+    //returns all products
     public ResultSet GetAllProducts() throws SQLException {
         statement = c.createStatement();
         String query = "SELECT * FROM Products";
@@ -162,6 +169,7 @@ public final class UserDatabase {
         return rs;
     }
 
+    //returns a product with a specific id
     public ResultSet GetProductById(int id) throws SQLException {
         statement = c.createStatement();
         String query = "SELECT * FROM Products WHERE ID ='" + id + "';";
@@ -169,6 +177,7 @@ public final class UserDatabase {
         return rs;
     }
 
+    //update a products with a specific id
     public boolean updateProductById(int id, String name, String price, String location, String description, String category) throws SQLException {
         statement = c.createStatement();
         String query = "UPDATE Products SET " +
@@ -182,7 +191,7 @@ public final class UserDatabase {
         return true;
     }
 
-    //for searching
+    //for searching. Else-if statements for combinations.
     public ResultSet GetSpecificProducts(String name, String location, String category) throws SQLException {
         statement = c.createStatement();
         String query = "";
@@ -215,6 +224,7 @@ public final class UserDatabase {
         return rs;
     }
 
+    //delete a product
     public boolean deleteProduct(int productID) throws SQLException {
         statement = c.createStatement();
         String query = "DELETE FROM Products WHERE ID = " + productID + ";";

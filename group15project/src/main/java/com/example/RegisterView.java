@@ -19,8 +19,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+
+//this view is for registering users
 public class RegisterView extends JPanel{
 
+    //list of components
     JTextField username;
     JTextField password;
     JTextField fullname;
@@ -39,14 +42,15 @@ public class RegisterView extends JPanel{
 
     UserDatabase userDatabase = new UserDatabase();
 
+    
     public RegisterView(Runnable BackToLogin) {
         //set panel layout
-        
         JPanel mainPanel = new JPanel();
         mainPanel.setSize(new Dimension(800,600));
+        //one lineborder and another inner border
         mainPanel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
+        //components are all in their own rows
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
 
         username = new JTextField(32);
         password = new JTextField(32);
@@ -61,11 +65,12 @@ public class RegisterView extends JPanel{
         phoneNumberText = new JLabel("puhelinnumero");
         emailText = new JLabel("email");
 
-        confirmButton = new JButton("hyväksy");
+        //return to main
         backButton = new JButton("peruuta");
-
         backButton.addActionListener(e -> BackToLogin.run());
 
+        //checks if new user can be added, and then adds it
+        confirmButton = new JButton("hyväksy");
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,12 +104,15 @@ public class RegisterView extends JPanel{
             }
         });
 
+        //create the rows. empty rows in between to improve readability.
         JPanel topRow = new JPanel(new BorderLayout(200,0));
         topRow.add(Box.createRigidArea(d), BorderLayout.WEST);
         topRow.add(topheader, BorderLayout.CENTER);
+
         JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonRow.add(confirmButton, BorderLayout.WEST);
         buttonRow.add(backButton, BorderLayout.EAST);
+
         mainPanel.add(topRow, BorderLayout.CENTER);
         mainPanel.add(Box.createRigidArea(d));
         mainPanel.add(createRow(usernameText, username));
@@ -119,11 +127,13 @@ public class RegisterView extends JPanel{
         mainPanel.add(Box.createRigidArea(d));
         mainPanel.add(buttonRow);
 
+        //add the panel to the main one.
         add(mainPanel);
 
         
     }
 
+    //method to create label + textfield rows
     private JPanel createRow(JLabel label, JTextField text) {
             JPanel row = new JPanel(new BorderLayout(10,0));
             row.add(label, BorderLayout.CENTER);

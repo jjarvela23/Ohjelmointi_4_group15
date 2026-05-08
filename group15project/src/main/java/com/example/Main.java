@@ -5,16 +5,16 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
+//starts the 
 public class Main extends JFrame {
 
     //global variable for the user who is logged in.
     public static int CurrentUser = 0;
 
-    //TODO
+    //TODO add more 
     //Global array that contains categories and locations
-    public static String[] CateroryList = {"kategoria", "elektroniikka", "z" };
-    public static String[] LocationList = {"sijainti", "pohjanmaa", "z" };
+    public static String[] CateroryList = {"kategoria", "elektroniikka", "z", "y", "x" };
+    public static String[] LocationList = {"sijainti", "pohjanmaa", "z", "y", "x" };
 
     public static void main(String[] args) {
         
@@ -48,7 +48,7 @@ public class Main extends JFrame {
 
         //add panel to the frame
         frame.add(panel);
-        //set frame to screen resolution, preferable TODO
+        //set frame to size, user cannot alter
         frame.setSize(1150, 700);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

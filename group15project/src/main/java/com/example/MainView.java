@@ -30,7 +30,7 @@ public class MainView extends JPanel {
     JComboBox<String> Category;
     JComboBox<String> Location;
 
-    JPanel p1 = new JPanel();
+    JPanel p1;
 
     JPanel productsPanel = new JPanel(new FlowLayout());
     
@@ -41,8 +41,10 @@ public class MainView extends JPanel {
     public MainView(Runnable goToLogin, Runnable SellProduct, Runnable goToUser, UserView userView) {
         //set panel layout
         setLayout(new FlowLayout());
+        //height changes how far you can scroll
+        productsPanel.setPreferredSize(new Dimension(1000, 2000));
 
-        productsPanel.setPreferredSize(new Dimension(1000, 600));
+        //panel at the top of the screen
         JPanel p1 = new JPanel();
 
         label = new JLabel();
@@ -54,7 +56,7 @@ public class MainView extends JPanel {
         Location = new JComboBox<>(Main.LocationList);
         Category = new JComboBox<>(Main.CateroryList);
 
-        // make an else-if that checks if the user has logged in. button name changes, and the button sends to a different screen.
+        // make an else-if that checks if the user has logged in. Button sends to a different screen.
         UserButton = new JButton("käyttäjä");
         UserButton.addActionListener(new ActionListener() {
             @Override
@@ -83,6 +85,7 @@ public class MainView extends JPanel {
             }
         });
 
+        //calls setProducts when clicked
         SearchButton = new JButton("hae");
         SearchButton.addActionListener(new ActionListener() {
              @Override
@@ -106,12 +109,15 @@ public class MainView extends JPanel {
         this.add(scrollPane);
     }
 
-    //create a list of containers and add them to the main panel.
+    //create a list of containers and add them to the main panel. Parameter is used when searching. When true, it reads the searchbar and category/location comboboxes.
     public void SetProducts(boolean Searching) {
+        //remove old products
         productsPanel.removeAll();
         try {
             ResultSet rs = null;
+            //different resultset when searching.
             if (Searching) {
+                //same database method can be used for different combinations of searches.
                 String searchName = "";
                 String searchLocation = "";
                 String searchCategory = ""; 
@@ -127,10 +133,12 @@ public class MainView extends JPanel {
                 rs = userDatabase.GetSpecificProducts(searchName, searchLocation, searchCategory);
             }
             else {
-                //regular 
+                //regular resultset
                 rs = userDatabase.GetAllProducts();
             }
+            //now the product information are added to their individual components
             while (rs.next()) {
+                //creating the container. Each row has two columns
                 JPanel productContainer = new JPanel(new GridLayout(0, 2, 4, 4));
                 productContainer.setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -145,6 +153,7 @@ public class MainView extends JPanel {
                 String phonenumber = "";
                 String email = "";
                 ResultSet rs2 = userDatabase.GetUser(owner);
+                //also gets the sellers information from a different table.
                 while (rs2.next()) {
                     fullname = rs2.getString("fullname");
                     phonenumber = rs2.getString("phonenumber");
@@ -155,6 +164,7 @@ public class MainView extends JPanel {
                 final String sellerPhone = phonenumber;
                 final String sellerEmail = email;
 
+                //add labels and product information
                 productContainer.add(new JLabel("nimi:"));
                 productContainer.add(new JLabel(productName));
                 productContainer.add(new JLabel("hinta:"));
@@ -164,10 +174,12 @@ public class MainView extends JPanel {
                 productContainer.add(new JLabel("myyjä:"));
                 productContainer.add(new JLabel(sellerName));
 
+                //button that opens another window with more information to save space on the main view.
                 JButton more = new JButton("näytä lisää");
                 more.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        //creating a new frame
                         JFrame details = new JFrame(productName);
                         details.setSize(600, 400);
                         JPanel innerPanel = new JPanel(new GridLayout(0, 2, 8, 8));
@@ -190,19 +202,19 @@ public class MainView extends JPanel {
                         innerPanel.add(new JLabel("Sähköposti:"));
                         innerPanel.add(new JLabel(sellerEmail));
 
+                        //add components to frame, center the window and set it visible.
                         details.add(innerPanel);
                         details.setLocationRelativeTo(null);
                         details.setVisible(true);
                     }
                 });
-
+                //add button to panel
                 productContainer.add(more);
                 productsPanel.add(productContainer);
             }
         } catch (SQLException ex) {
             System.out.println("Failed to add products to main");
         }
-
         revalidate();
         repaint();
     }
